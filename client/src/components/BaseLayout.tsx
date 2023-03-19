@@ -1,9 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import { urls } from "../helpers";
 
 const BaseLayout: ()=>JSX.Element = () => {
     return <>
     <div className="base-layout">
-        <h1>COACH ROUTER</h1>
+        <Link to={urls.home}><h1>{(import.meta.env.VITE_APP_NAME).toUpperCase()}</h1></Link>
     </div>
     <Outlet />
     <div className="footer">

@@ -15,12 +15,12 @@ const {
 module.exports.checkLoginStateController = async (req, res)=>{
     try{
         if(!req.cookies || !req.cookies[process.env.APP_NAME]){
-            return res.status(200).end();
+            return res.status(200).json({});
         }
         const decodedToken = verify(req.cookies[process.env.APP_NAME], process.env.SECRETSTRING, (error, decodedToken)=>{
             if(error){
                 setCookie(res, process.env.APP_NAME, '', 1);
-                return res.status(400).end();
+                return res.status(400).json({});
             }
             return decodedToken;
         });
@@ -72,24 +72,24 @@ module.exports.loginController = async (req, res)=>{
         if(req.cookies&&req.cookies[`${process.env.APP_NAME}loginusername`]){
             const {id: theUsername} = verify(req.cookies[`${process.env.APP_NAME}loginusername`], process.env.SECRETSTRING, (error, decodedToken)=>{
                 if(error){
-                    throw {error: invalidToken};
+                    throw {error: invalidToken, password: true};
                 }
                 return decodedToken;
             })
             const user = await User.findOne({username: theUsername});
             if(!user){
-                throw {error: userNotFound(theUsername)};
+                throw {error: userNotFound(theUsername), password: true};
             }
             const auth = await compare(password, user.password);
             if(!auth){
-                throw {errorFields:{password: incorrectPassword}};
+                throw {errorFields:{password: incorrectPassword}, password: true};
             }
             const token = createToken(user._id);
             setCookie(res, process.env.APP_NAME, token);
             setCookie(res, `${process.env.APP_NAME}loginusername`, '', 1);
             return res.status(200).json({ user: user.username});
         }else{
-            return res.status(401).json({error: sessionExpired});
+            return res.status(401).json({sessionExpired});
         }
     }catch(error){
         signupErrorHandler(error, res);
