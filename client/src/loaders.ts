@@ -1,13 +1,17 @@
 import { serverError } from "./helpers";
 
-export const checkLoginStateLoader = async ()=>{
-    console.log('loader')
-    const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/check-login-state`,{
+const loader = async (url: RequestInfo|URL)=>{
+    const res = await fetch(url,{
         credentials: "include"
     })
     if(res.status === 500){
         throw Error(serverError);
     }
-    const data = await res.json();
-    return data;
+    return await res.json();
+}
+export const checkLoginStateLoader = async ()=>{
+    return await loader(`${import.meta.env.VITE_SERVER}/auth/check-login-state`);
+}
+export const subjectLoader = async ()=>{
+    return await loader(`${import.meta.env.VITE_SERVER}/category`);
 }

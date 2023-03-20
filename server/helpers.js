@@ -25,8 +25,10 @@ module.exports.messages = {
     accountCreated: 'Your account has been created sucessfully.',
     incorrectPassword: 'Incorrect password.',
     sessionExpired: 'Your session expired.',
-    _404message: 'Resources not found.'
+    _404message: 'Resources not found.',
+    success: 'success'
 }
+module.exports.categories = ['science', 'art'];
 module.exports.userValidator = (name, username, password1, password2, email)=>{
     let errorFields = {name: '', username: '', password1: '', password2: '', email: ''};
     if(!name){

@@ -6,7 +6,7 @@ const Signup: ()=> JSX.Element = () => {
     if(data&&data.success){
         return <div className="success">
             <p>{data.success}</p>
-            <Link to={urls.home}>Next</Link>
+            <Link to={urls.subject}>Next</Link>
         </div>
     }
     return <Form method="post" action={urls.signup}>

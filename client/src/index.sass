@@ -1,0 +1,58 @@
+$primary: rgba(burlywood, .5)
+$success: green
+$error: red
+
+@mixin box($padding: 5px, $maxWidth: 50%, $margin: 5px, $borderRadius: 5px)
+    border-radius: $borderRadius
+    padding: $padding
+    max-width: $maxWidth
+    margin: $margin auto
+    text-align: center
+
+@mixin flex-column
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    align-items: center
+
+.base-layout h1, .oops h1, .oops h2, .footer
+    text-align: center
+
+ul
+    padding: 0px
+
+.home
+    @include flex-column()
+
+form    
+    display: block
+    @include box()
+    background-color: $primary
+    height: 60%
+    input
+        width: 50%
+    
+    *
+        display: block
+        margin: 10px auto
+        max-width: 80%
+    
+
+input
+    padding: 5px
+    border-radius: 5px
+
+button
+    @extend input
+
+.success
+    text-align: center
+    color: $success
+    border: 2px solid $success
+    @include box()
+
+.error
+    text-align: center
+    color: $error
+    border: 2px solid $error
+    @include box()

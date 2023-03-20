@@ -1,7 +1,7 @@
-import React, { lazy, LazyExoticComponent, Suspense } from 'react'
-import ReactDOM from 'react-dom/client'
+import React, { lazy, LazyExoticComponent, Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
 
-import './index.scss'
+import './index.sass';
 
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 
@@ -13,10 +13,11 @@ const Home: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Hom
 const NotFound: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/NotFound'));
 const Login: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Login'));
 const Signup: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Signup'));
+const Subject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Subject'));
 
-import { loginAction, signupAction } from './actions';
+import { loginAction, signupAction, subjectAction } from './actions';
 
-import { checkLoginStateLoader } from './loaders';
+import { checkLoginStateLoader, subjectLoader } from './loaders';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} loader={checkLoginStateLoader} />
       <Route path='login' element={<Login />} action={loginAction} />
       <Route path='signup' element={<Signup />} action={signupAction} />
+      <Route path='subject' element={<Subject />} loader={subjectLoader} action={subjectAction} />
       <Route path='*' element={<NotFound />} />
     </Route>
   )

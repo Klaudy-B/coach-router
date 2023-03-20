@@ -5,7 +5,7 @@ const {
     createToken,
     userValidator,
     setCookie,
-    messages: { userNotFound, invalidToken, accountCreated, incorrectPassword, sessionExpired }
+    messages: { userNotFound, invalidToken, accountCreated, incorrectPassword, sessionExpired, success }
 } = require('../helpers');
 const {
     signupErrorHandler,
@@ -100,6 +100,20 @@ module.exports.logoutController = (req, res)=>{
     try{
         setCookie(res, process.env.APP_NAME, '', 1);
         return res.status(200).end();
+    }catch(error){
+        generalErrorHandler(error, res);
+    }
+}
+module.exports.subjectController = async (req, res)=>{
+    try{
+        const { category, name, price } = req.body;
+        const user = await User.findOne({username: req.username});
+        if(!user){
+            return {error: invalidToken};
+        }
+        user.subjects = { category, name, price };
+        await user.save();
+        return res.json({ success });
     }catch(error){
         generalErrorHandler(error, res);
     }
