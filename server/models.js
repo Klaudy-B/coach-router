@@ -6,7 +6,7 @@ module.exports.User = new model('user', Schema(
             username: {type: String, unique: true},
             email: String,
             password: String,
-            subjects: {category: String, name: String, price: Number},
+            subject: {category: String, name: String, price: Number},
         }
     )
 )

@@ -121,7 +121,7 @@ module.exports.subjectController = async (req, res)=>{
         if(!user){
             return {error: invalidToken};
         }
-        user.subjects = { category, name, price };
+        user.subject = { category, name, price };
         await user.save();
         return res.json({ success });
     }catch(error){
@@ -133,7 +133,7 @@ module.exports.profilePictureController = async (req, res)=>{
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send({ noUpload });
           }
-          req.files.picture.mv(absolute+profilePictures+req.username, (error)=>{
+          req.files.picture.mv(absolute+profilePictures+'/'+req.username, (error)=>{
             if(error){
                 throw error;
             }

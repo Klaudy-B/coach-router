@@ -32,9 +32,9 @@ module.exports.messages = {
     noUpload: 'No files were uploaded.'
 }
 module.exports.paths = {
-    absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server/',
-    profilePictures: 'profile_pictures/',
-    johnDoe: 'john_doe/johndoe.jpg'
+    absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server',
+    profilePictures: '/profile_pictures',
+    johnDoe: '/john_doe/johndoe.jpg'
 }
 module.exports.categories = ['science', 'art'];
 module.exports.userValidator = (name, username, password1, password2, email)=>{

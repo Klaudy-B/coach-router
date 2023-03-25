@@ -33,10 +33,7 @@ const verifyUser = async (req, res, next)=>{
 }
 
 const staticMiddleware = (req, res, next)=>{
-    if(req.url !== '/'+req.username){
-        return res.status(401).sendFile(absolute+profilePictures+unauthorized+'/'+unauthorized);
-    }
-    if(!existsSync(absolute+profilePictures+req.username)){
+    if(!existsSync(absolute+profilePictures+req.url)){
         return res.status(200).sendFile(absolute+profilePictures+johnDoe);
     }
     next();

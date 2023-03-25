@@ -1,8 +1,29 @@
+import { useEffect, useReducer } from "react";
 import { Link, useLoaderData } from "react-router-dom";
+import Loading from "../components/Loading";
 import { urls } from "../helpers";
 
 const Home: ()=>JSX.Element = () => {
+    const reducer = (state: any, action: any)=>{
+        return action;
+    }
     const data: any = useLoaderData();
+    const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
+    useEffect(
+        ()=>{
+            fetch(`${import.meta.env.VITE_SERVER}/coaches`)
+            .then(res=>res.json())
+            .then(data=>dispatch(data))
+            .catch(error=>{
+                if(error.name === 'AbortError'){
+                    console.log(error)
+                    return;
+                }
+                dispatch({error: error.message})
+            })
+        },
+        []
+    )
     return <div className="home">
         {
             data&&data.error&&<div>{data.error}</div>
@@ -22,7 +43,30 @@ const Home: ()=>JSX.Element = () => {
                     <Link to={urls.login}>Login</Link>
                 </nav>
         }
-        <ul>list of coaches.</ul>
+        {
+            coaches&&coaches.error&&<div className="error">{coaches.error}</div>
+        }
+        {
+            coaches&&coaches.loading&&<Loading />
+        }
+        {
+            coaches&&(coaches.length > 0)&&coaches.map(
+                (coach: any, index: number)=>{
+                    return <div key={index} className="coach">
+                        <img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /><br />
+                        <div><b>{coach.name}</b></div>
+                        <div><b>username: </b>{coach.username}</div>
+                        <div><b>Email: </b>{coach.email}</div>
+                        <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
+                        <div><b>Category: </b>{coach.subject&&coach.subject.category}</div>
+                        <div><b>Monthly price: </b>{coach.subject&&coach.subject.price}</div>
+                    </div>
+                }
+            )
+        }
+        {
+            (coaches&&coaches.length === 0)&&<div>No coach.</div>
+        }
     </div>
 }
  
