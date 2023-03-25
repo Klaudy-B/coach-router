@@ -40,7 +40,7 @@ const Subject: ()=>JSX.Element = () => {
     {
         actionData&&
         actionData.success&&
-        <Link to={urls.home}>Done</Link>
+        <center><button><Link to={urls.profilePicture}>Done</Link></button></center>
     }
     </>
 }

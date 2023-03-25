@@ -9,7 +9,12 @@ const Home: ()=>JSX.Element = () => {
         }
         <p>Home text</p>
         {
-            data&&data.name&&<div className="welcome">Hi, {data.name}</div>
+            data&&data.name&&<div className="welcome">
+                <p>Hi, {data.name}</p>
+                <div>
+                    <center><img width="50%" src={`${import.meta.env.VITE_SERVER}/static/${data.user}`} alt="profile-picture" /></center>
+                </div>
+                </div>
         }
         {
             (Object.keys(data).length === 0)&&<nav>

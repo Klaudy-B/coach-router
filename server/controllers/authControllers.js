@@ -5,7 +5,17 @@ const {
     createToken,
     userValidator,
     setCookie,
-    messages: { userNotFound, invalidToken, accountCreated, incorrectPassword, sessionExpired, success }
+    messages: {
+        userNotFound,
+        invalidToken,
+        accountCreated,
+        incorrectPassword,
+        sessionExpired,
+        success,
+        profilePictureSuccess,
+        noUpload
+    },
+    paths: { absolute, profilePictures }
 } = require('../helpers');
 const {
     signupErrorHandler,
@@ -114,6 +124,21 @@ module.exports.subjectController = async (req, res)=>{
         user.subjects = { category, name, price };
         await user.save();
         return res.json({ success });
+    }catch(error){
+        generalErrorHandler(error, res);
+    }
+}
+module.exports.profilePictureController = async (req, res)=>{
+    try{
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).send({ noUpload });
+          }
+          req.files.picture.mv(absolute+profilePictures+req.username, (error)=>{
+            if(error){
+                throw error;
+            }
+            return res.status(200).json({success: profilePictureSuccess});
+          })
     }catch(error){
         generalErrorHandler(error, res);
     }

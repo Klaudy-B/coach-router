@@ -43,6 +43,20 @@ const action = async (
         throw Error(error.message);
     }
 }
+export const ProfilePictureAction = async ()=>{
+    const picture = (document.querySelector('form>input[type=file]') as any).files[0];
+    const formData = new FormData();
+    formData.append('picture', picture);
+    const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/profile-picture`, {
+        method: "POST",
+        body: formData,
+        credentials: "include"
+    })
+    if(res.status === 500){
+        throw Error(serverError);
+    }
+    return await res.json();
+}
 
 export const signupAction = async (arg: any)=>{
     const formData = await arg.request.formData();
@@ -65,7 +79,7 @@ export const loginAction = async (arg: any)=>{
 }
 export const subjectAction = async (arg: any)=>{
     const formData = await arg.request.formData();
-    const data = await action('Continue', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/subject`, 'POST', {
+    const data = await action('Submit', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/subject`, 'POST', {
         category: formData.get('category'),
         name: formData.get('name'),
         price: formData.get('price')

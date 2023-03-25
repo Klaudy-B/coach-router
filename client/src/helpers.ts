@@ -2,7 +2,8 @@ export const urls = {
     signup: '/signup',
     login: '/login',
     home: '/',
-    subject: '/subject'
+    subject: '/subject',
+    profilePicture: '/profile-picture'
 }
 export const placeHolders = {
     emailPlaceHolder: 'xyz@example.com',

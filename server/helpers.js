@@ -26,7 +26,15 @@ module.exports.messages = {
     incorrectPassword: 'Incorrect password.',
     sessionExpired: 'Your session expired.',
     _404message: 'Resources not found.',
-    success: 'success'
+    success: 'success',
+    unauthorized: 'unauthorized',
+    profilePictureSuccess: 'Profile picture uploaded successfully.',
+    noUpload: 'No files were uploaded.'
+}
+module.exports.paths = {
+    absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server/',
+    profilePictures: 'profile_pictures/',
+    johnDoe: 'john_doe/johndoe.jpg'
 }
 module.exports.categories = ['science', 'art'];
 module.exports.userValidator = (name, username, password1, password2, email)=>{

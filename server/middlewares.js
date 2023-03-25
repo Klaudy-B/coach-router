@@ -1,7 +1,10 @@
 const { generalErrorHandler } = require('./errorhandlers/authErrorHandlers');
+const { existsSync } = require('fs');
 const { setCookie } = require('./helpers');
 const { User } = require('./models');
 const { verify } = require('jsonwebtoken');
+const { paths: { absolute, profilePictures, johnDoe }, messages: { unauthorized } } = require('./helpers');
+const static = require('express').static;
 
 const verifyUser = async (req, res, next)=>{
     try{
@@ -29,4 +32,14 @@ const verifyUser = async (req, res, next)=>{
     }
 }
 
-module.exports = { verifyUser };
+const staticMiddleware = (req, res, next)=>{
+    if(req.url !== '/'+req.username){
+        return res.status(401).sendFile(absolute+profilePictures+unauthorized+'/'+unauthorized);
+    }
+    if(!existsSync(absolute+profilePictures+req.username)){
+        return res.status(200).sendFile(absolute+profilePictures+johnDoe);
+    }
+    next();
+}
+
+module.exports = { verifyUser, staticMiddleware };

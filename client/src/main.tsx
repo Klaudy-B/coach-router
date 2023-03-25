@@ -14,8 +14,9 @@ const NotFound: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages
 const Login: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Login'));
 const Signup: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Signup'));
 const Subject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Subject'));
+const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/ProfilePicture.'));
 
-import { loginAction, signupAction, subjectAction } from './actions';
+import { loginAction, ProfilePictureAction, signupAction, subjectAction } from './actions';
 
 import { checkLoginStateLoader, subjectLoader } from './loaders';
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login />} action={loginAction} />
       <Route path='signup' element={<Signup />} action={signupAction} />
       <Route path='subject' element={<Subject />} loader={subjectLoader} action={subjectAction} />
+      <Route path='profile-picture' element={<ProfilePicture />} action={ProfilePictureAction} />
       <Route path='*' element={<NotFound />} />
     </Route>
   )
@@ -33,7 +35,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Suspense fallback={<Loading />}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </Suspense>
   </React.StrictMode>,
 )

@@ -5,9 +5,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRoutes');
 const { messages: { _404message } } = require('./helpers');
-const { verifyUser } = require('./middlewares');
+const { verifyUser, staticMiddleware } = require('./middlewares');
 const { categories } = require('./helpers');
-
 const app = express();
 app.use(
     cors(
@@ -32,5 +31,6 @@ connect(
 
 app.use('/auth', authRouter);
 app.get('/category', verifyUser, (req, res)=>res.json(categories));
+app.use('/static', verifyUser, staticMiddleware, express.static('profile_pictures'));
 app.use('*', (req, res)=>res.status(404).json({error: _404message})  );
 
