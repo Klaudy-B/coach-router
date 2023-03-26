@@ -14,7 +14,8 @@ const NotFound: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages
 const Login: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Login'));
 const Signup: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Signup'));
 const Subject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Subject'));
-const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/ProfilePicture.'));
+const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/ProfilePicture'));
+const Profile: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Profile'));
 
 import { loginAction, ProfilePictureAction, signupAction, subjectAction } from './actions';
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       <Route path='signup' element={<Signup />} action={signupAction} />
       <Route path='subject' element={<Subject />} loader={subjectLoader} action={subjectAction} />
       <Route path='profile-picture' element={<ProfilePicture />} action={ProfilePictureAction} />
+      <Route path='profile-page/:username' element={<Profile />} />
       <Route path='*' element={<NotFound />} />
     </Route>
   )

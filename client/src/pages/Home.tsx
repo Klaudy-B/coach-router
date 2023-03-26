@@ -1,35 +1,18 @@
-import { useEffect, useReducer } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import {  useReducer } from "react";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
-import { urls } from "../helpers";
+import { urls, reducer } from "../helpers";
+import { useFetch } from "../hooks";
 
 const Home: ()=>JSX.Element = () => {
-    const reducer = (state: any, action: any)=>{
-        return action;
-    }
     const data: any = useLoaderData();
     const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
-    useEffect(
-        ()=>{
-            const abort = new AbortController();
-            fetch(`${import.meta.env.VITE_SERVER}/coaches`, {signal: abort.signal})
-            .then(res=>res.json())
-            .then(data=>dispatch(data))
-            .catch(error=>{
-                if(error.name === 'AbortError'){
-                    return;
-                }
-                dispatch({error: error.message})
-            })
-        return ()=>abort.abort()
-        },
-        []
-    )
+    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`);
     return <div className="home">
         {
             data&&data.error&&<div>{data.error}</div>
         }
-        <p>Home text</p>
+        <p>A website to find coaches for helping you with certain subjects.</p>
         {
             data&&data.name&&<div className="welcome">
                 <p>Hi, {data.name}</p>
@@ -57,13 +40,11 @@ const Home: ()=>JSX.Element = () => {
                         return;
                     }
                     return <div key={index} className="coach">
-                        <img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /><br />
+                        <Link to={`${urls.profile}/${coach.username}`}><img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /></Link><br />
                         <div><b>{coach.name}</b></div>
                         <div><b>username: </b>{coach.username}</div>
-                        <div><b>Email: </b>{coach.email}</div>
                         <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
-                        <div><b>Category: </b>{coach.subject&&coach.subject.category}</div>
-                        <div><b>Monthly price: </b>{coach.subject&&coach.subject.price}</div>
+                        <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
                     </div>
                 }
             )

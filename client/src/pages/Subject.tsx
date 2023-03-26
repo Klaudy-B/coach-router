@@ -25,7 +25,7 @@ const Subject: ()=>JSX.Element = () => {
         <label>Subject name:</label>
         <input type="text" name="name" required/>
         <br />
-        <label>Hourly price:</label>
+        <label>Hourly price in dollar:</label>
         <input type="number" name="price" required/>
         <br />
         {
