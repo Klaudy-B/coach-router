@@ -17,14 +17,14 @@ const Subject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/
 const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/ProfilePicture'));
 const Profile: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Profile'));
 
-import { loginAction, ProfilePictureAction, signupAction, subjectAction } from './actions';
+import { loginAction, logoutAction, ProfilePictureAction, signupAction, subjectAction } from './actions';
 
 import { checkLoginStateLoader, subjectLoader } from './loaders';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<BaseLayout />} errorElement={<Oops />}>
-      <Route index element={<Home />} loader={checkLoginStateLoader} />
+    <Route path='/' element={<BaseLayout />} loader={checkLoginStateLoader} action={logoutAction} errorElement={<Oops />}>
+      <Route index element={<Home />} />
       <Route path='login' element={<Login />} action={loginAction} />
       <Route path='signup' element={<Signup />} action={signupAction} />
       <Route path='subject' element={<Subject />} loader={subjectLoader} action={subjectAction} />

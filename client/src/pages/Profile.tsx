@@ -1,13 +1,15 @@
-import { useReducer } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useReducer } from "react";
+import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
-import { reducer } from "../helpers";
+import { userContext } from "../contexts";
+import { reducer, urls } from "../helpers";
 import { useFetch } from "../hooks";
 
 const Profile: () => JSX.Element = () => {
     const username = useParams().username;
+    const user: any = useContext(userContext);
     const [ coach, dispatch ] = useReducer(reducer, {loading: true});
-    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches/${username}`);
+    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches/${username}`, username);
     if(coach&&coach.loading){
         return <Loading />
     }
@@ -16,6 +18,7 @@ const Profile: () => JSX.Element = () => {
     }
     if(coach&&coach.name){
     return <>
+        {user.user&&user.user===username&&<Link to={urls.profilePicture}>Change my profile picture</Link>}
         <center>
             <img src={`${import.meta.env.VITE_SERVER}/static/${username}`} alt="profile-picture" /><br />
         </center>

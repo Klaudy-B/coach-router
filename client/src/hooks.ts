@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const useFetch = (dispatch: React.Dispatch<any>, url: string)=>{
+export const useFetch = (dispatch: React.Dispatch<any>, url: string, username: string|undefined)=>{
     useEffect(
         ()=>{
             const abort = new AbortController();
@@ -15,6 +15,6 @@ export const useFetch = (dispatch: React.Dispatch<any>, url: string)=>{
             })
         return ()=>abort.abort()
         },
-        []
+        [username]
     )
 }

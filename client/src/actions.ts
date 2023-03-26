@@ -8,7 +8,7 @@ const action = async (
     body?: any
     )=>{
     try{
-        const button: any = document.querySelector('form > button');
+        const button: any = document.querySelectorAll('form > button')[1];
         button.disabled = true;
         button.innerText = loadingString;
         let res;
@@ -47,6 +47,8 @@ export const ProfilePictureAction = async ()=>{
     const picture = (document.querySelector('form>input[type=file]') as any).files[0];
     const formData = new FormData();
     formData.append('picture', picture);
+    const button: any = document.querySelectorAll('form > button')[1];
+    button.innerText = 'Please wait...'; 
     const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/profile-picture`, {
         method: "POST",
         body: formData,
@@ -55,6 +57,7 @@ export const ProfilePictureAction = async ()=>{
     if(res.status === 500){
         throw Error(serverError);
     }
+    button.innerText = 'Submit'; 
     return await res.json();
 }
 
@@ -85,4 +88,13 @@ export const subjectAction = async (arg: any)=>{
         price: formData.get('price')
     });
     return data;
+}
+export const logoutAction = async ()=>{
+    const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/logout`, {
+        credentials: 'include'
+    });
+    if(!res.ok){
+        throw Error(serverError);
+    }
+    return {ok: true};
 }

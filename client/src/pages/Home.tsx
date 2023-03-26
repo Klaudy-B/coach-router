@@ -1,13 +1,14 @@
-import {  useReducer } from "react";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import {  useContext, useReducer } from "react";
+import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+import { userContext } from "../contexts";
 import { urls, reducer } from "../helpers";
 import { useFetch } from "../hooks";
 
 const Home: ()=>JSX.Element = () => {
-    const data: any = useLoaderData();
+    const data: any = useContext(userContext);
     const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
-    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`);
+    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`, undefined);
     return <div className="home">
         {
             data&&data.error&&<div>{data.error}</div>
