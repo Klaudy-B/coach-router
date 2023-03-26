@@ -4,7 +4,7 @@ const { connect, set } = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRoutes');
-const coachRoutes = require('./routes/coachRoutes')
+const coachRouter = require('./routes/coachRoutes')
 const { messages: { _404message } } = require('./helpers');
 const { verifyUser, staticMiddleware } = require('./middlewares');
 const { categories } = require('./helpers');
@@ -32,7 +32,7 @@ connect(
 )
 
 app.use('/auth', authRouter);
-app.use('/coaches', coachRoutes);
+app.use('/coaches', coachRouter);
 app.get('/category', verifyUser, (req, res)=>res.json(categories));
 app.use('/static', staticMiddleware, express.static('profile_pictures'));
 app.use('*', (req, res)=>res.status(404).json({error: _404message})  );

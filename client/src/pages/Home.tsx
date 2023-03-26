@@ -11,16 +11,17 @@ const Home: ()=>JSX.Element = () => {
     const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
     useEffect(
         ()=>{
-            fetch(`${import.meta.env.VITE_SERVER}/coaches`)
+            const abort = new AbortController();
+            fetch(`${import.meta.env.VITE_SERVER}/coaches`, {signal: abort.signal})
             .then(res=>res.json())
             .then(data=>dispatch(data))
             .catch(error=>{
                 if(error.name === 'AbortError'){
-                    console.log(error)
                     return;
                 }
                 dispatch({error: error.message})
             })
+        return ()=>abort.abort()
         },
         []
     )
@@ -52,6 +53,9 @@ const Home: ()=>JSX.Element = () => {
         {
             coaches&&(coaches.length > 0)&&coaches.map(
                 (coach: any, index: number)=>{
+                    if(data&&coach.name===data.name){
+                        return;
+                    }
                     return <div key={index} className="coach">
                         <img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /><br />
                         <div><b>{coach.name}</b></div>
