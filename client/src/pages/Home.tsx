@@ -34,20 +34,27 @@ const Home: ()=>JSX.Element = () => {
             coaches&&coaches.loading&&<Loading />
         }
         {
-            coaches&&(coaches.length > 0)&&coaches.map(
-                (coach: any, index: number)=>{
-                    if(data&&coach.name===data.name){
-                        return;
+            coaches&&(coaches.length > 0)&&
+            <div className="coaches">
+            {
+                coaches.map(
+                    (coach: any, index: number)=>{
+                        if(data&&coach.name===data.name){
+                            return;
+                        }
+                        return <div key={index} className="coach">
+                            <center><Link to={`${urls.profile}/${coach.username}`}><img width="60%" src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /></Link></center><br />
+                            <div className="details">
+                            <div><b>{coach.name}</b></div>
+                            <div><b>username: </b>{coach.username}</div>
+                            <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
+                            <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
+                            </div>
+                        </div>
                     }
-                    return <div key={index} className="coach">
-                        <Link to={`${urls.profile}/${coach.username}`}><img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /></Link><br />
-                        <div><b>{coach.name}</b></div>
-                        <div><b>username: </b>{coach.username}</div>
-                        <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
-                        <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
-                    </div>
-                }
-            )
+                )
+            }
+            </div>
         }
         {
             (coaches&&coaches.length === 0)&&<div>No coach.</div>

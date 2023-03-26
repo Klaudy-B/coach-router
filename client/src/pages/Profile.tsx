@@ -19,12 +19,14 @@ const Profile: () => JSX.Element = () => {
         <center>
             <img src={`${import.meta.env.VITE_SERVER}/static/${username}`} alt="profile-picture" /><br />
         </center>
+        <div className="details">
         <div><b>{coach.name}</b></div>
         <div><b>username: </b>{coach.username}</div>
         <div><b>Email: </b>{coach.email}</div>
         <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
         <div><b>Category: </b>{coach.subject&&coach.subject.category}</div>
         <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
+        </div>
         </>
     }else{
         return <div className="error">No result.</div>

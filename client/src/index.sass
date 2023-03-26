@@ -1,4 +1,6 @@
+@import "https://fonts.googleapis.com/css?family=Poppins, Merriweather"
 $primary: rgba(burlywood, .5)
+$secondary: blue
 $success: green
 $error: red
 
@@ -14,6 +16,9 @@ $error: red
     flex-direction: column
     justify-content: space-around
     align-items: center
+
+body
+    font-family: Merriweather, Poppins, sans-serif
 
 .base-layout h1, .oops h1, .oops h2, .footer
     text-align: center
@@ -46,6 +51,9 @@ input
 
 button
     @extend input
+    background-color: $secondary
+    color: white
+    cursor: pointer
 
 .success
     text-align: center
@@ -58,3 +66,32 @@ button
     color: $error
     border: 2px solid $error
     @include box()
+.coaches
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-around
+    .coach
+        background-color: $primary
+        padding: 5px
+        margin: 5px
+        border-radius: 10px
+.details
+    padding: 5px
+    border-radius: 10px
+    color: white
+    background-color: $secondary
+a
+    text-decoration: none
+    color: $secondary
+nav
+    display: flex
+    justify-content: space-between
+    margin: 10px auto
+    a
+        margin-left: 5px
+        padding: 5px
+        background-color: $secondary
+        color: white
+        border-radius: 5px
+    a:hover
+        background-color: lightblue

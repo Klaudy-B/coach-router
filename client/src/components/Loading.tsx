@@ -1,4 +1,4 @@
 const Loading: ()=> JSX.Element = () => {
-    return <span>Loading...</span>
+    return <center><span>Loading...</span></center>
 }
 export default Loading;
