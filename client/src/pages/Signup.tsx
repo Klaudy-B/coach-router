@@ -9,7 +9,7 @@ const Signup: ()=> JSX.Element = () => {
             <Link to={urls.subject}>Next</Link>
         </div>
     }
-    return <Form method="post" action={urls.signup}>
+    return <Form id="signup-form" method="post" action={urls.signup}>
         <label>Name:</label>
         <input type="text" name="name" required />
         {
@@ -56,6 +56,7 @@ const Signup: ()=> JSX.Element = () => {
         }
         <br />
         <button>Sign up</button>
+        <div>Already have an account? <Link to={urls.login}>Log in</Link>.</div>
     </Form>
 }
  

@@ -1,4 +1,4 @@
-import { Form, Navigate, useActionData } from "react-router-dom";
+import { Form, Navigate, useActionData, Link } from "react-router-dom";
 import { placeHolders, urls } from "../helpers";
 
 const Login: ()=> JSX.Element = () => {
@@ -13,7 +13,7 @@ const Login: ()=> JSX.Element = () => {
         return <Navigate to={urls.home} />
     }
     if(data&&data.password){
-        return <Form method="post" action={urls.login}>
+        return <Form id="login-form" method="post" action={urls.login}>
         <label>Password:</label>
         <input type="password" name="password" placeholder={placeHolders.password1PlaceHolder} required />
         {
@@ -28,8 +28,8 @@ const Login: ()=> JSX.Element = () => {
         }
         <button>Log in</button>
     </Form>
-    }
-    return <Form method="post" action={urls.login}>
+}
+    return <Form id="login-form" method="post" action={urls.login}>
         <label>Username:</label>
         <input type="text" name="username" required />
         {
@@ -40,6 +40,7 @@ const Login: ()=> JSX.Element = () => {
         }
         <br />
         <button>Continue</button>
+        <div>Don't have an account yet? <Link to={urls.signup}>Sign up</Link>.</div>
     </Form>
 }
  

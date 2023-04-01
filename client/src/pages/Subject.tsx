@@ -11,7 +11,7 @@ const Subject: ()=>JSX.Element = () => {
         throw Error(data.error);
     }
     return <>
-    <Form method="post" action={urls.subject}>
+    <Form id="subject-form" method="post" action={urls.subject}>
         <label>Category:</label>
         <select name="category" id="category" required>
             {
