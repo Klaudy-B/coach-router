@@ -48,7 +48,7 @@ export const ProfilePictureAction = async ()=>{
     const picture = (document.querySelector('form#profile-picture-form>input[type=file]') as any).files[0];
     const formData = new FormData();
     formData.append('picture', picture);
-    const button: any = document.querySelectorAll('form > button')[1];
+    const button: any = document.querySelector('form#profile-picture-form > button');
     button.innerText = 'Please wait...'; 
     const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/profile-picture`, {
         method: "POST",
@@ -90,14 +90,12 @@ export const subjectAction = async (arg: any)=>{
     });
     return data;
 }
-export const logoutAction = async (dispatch: any)=>{
+export const logoutAction = async ()=>{
     const res = await fetch(`${import.meta.env.VITE_SERVER}/auth/logout`, {
         credentials: 'include'
     });
     if(!res.ok){
-        dispatch({error: serverError});
-        return;
+        throw Error(serverError);
     }
-    dispatch({ok: true});
-    return;
+    return null;
 }
