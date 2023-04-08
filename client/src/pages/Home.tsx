@@ -11,7 +11,7 @@ const Home: ()=>JSX.Element = () => {
     useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`, undefined);
     return <div className="home">
         {
-            data&&data.error&&<div>{data.error}</div>
+            data&&data.error&&<div className="error">{data.error}</div>
         }
         <p>A website to find coaches for helping you with certain subjects.</p>
         {

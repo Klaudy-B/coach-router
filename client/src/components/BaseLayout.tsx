@@ -8,11 +8,10 @@ const BaseLayout: ()=>JSX.Element = () => {
     <div className="base-layout">
         <Link to={urls.home}><h1>{(import.meta.env.VITE_APP_NAME).toUpperCase()}</h1></Link>
         {
-        data&&data.name&&<center>
-        <Form method="post" action={urls.home}>
-            <button>Log out</button>
-        </Form>
-        <Link to={`/${urls.profile}/${data.user}`}>My profile</Link>
+        data&&data.name&&
+        <center>
+            <Form action={urls.home} method="post" id="logout-form"><button>Log out</button></Form>
+            <Link to={`${urls.profile}/${data.user}`}>My profile</Link>
         </center>
         }
     </div>

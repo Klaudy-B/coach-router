@@ -7,7 +7,7 @@ const ProfilePicture: ()=>JSX.Element = () => {
         throw Error(data.error);
     }
     return <center>
-    <Form method="post" action={urls.profilePicture} encType='multipart/form-data'>
+    <Form id="profile-picture-form" method="post" action={urls.profilePicture} encType='multipart/form-data'>
         <label>Choose a profile picture:</label>
         <input type="file" name="picture" accept="image/*" required />
         <br />
