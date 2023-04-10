@@ -36,7 +36,7 @@ module.exports.paths = {
     profilePictures: '/profile_pictures',
     johnDoe: '/john_doe/johndoe.jpg'
 }
-module.exports.categories = ['science', 'art'];
+module.exports.categories = ['science', 'art', 'coding', 'languages', 'music'];
 module.exports.userValidator = (name, username, password1, password2, email)=>{
     let errorFields = {name: '', username: '', password1: '', password2: '', email: ''};
     if(!name){

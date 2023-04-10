@@ -22,10 +22,11 @@ const Subject: ()=>JSX.Element = () => {
             }
         </select>
         <br />
+        <br />
         <label>Subject name:</label>
         <input type="text" name="name" required/>
         <br />
-        <label>Hourly price in dollar:</label>
+        <label>Hourly price in US dollar:</label>
         <input type="number" name="price" required/>
         <br />
         {
@@ -40,7 +41,7 @@ const Subject: ()=>JSX.Element = () => {
     {
         actionData&&
         actionData.success&&
-        <center><button><Link to={urls.profilePicture}>Done</Link></button></center>
+        <p><Link to={urls.profilePicture}>Done</Link></p>
     }
     </>
 }

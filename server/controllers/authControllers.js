@@ -130,10 +130,11 @@ module.exports.subjectController = async (req, res)=>{
 }
 module.exports.profilePictureController = async (req, res)=>{
     try{
+        const pictureName = req.username;
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send({ noUpload });
           }
-          req.files.picture.mv(absolute+profilePictures+'/'+req.username, (error)=>{
+          req.files.picture.mv(absolute+profilePictures+'/'+pictureName, (error)=>{
             if(error){
                 throw error;
             }
