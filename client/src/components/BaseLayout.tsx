@@ -4,22 +4,33 @@ import { urls } from "../helpers";
 
 const BaseLayout: ()=>JSX.Element = () => {
     const data: any = useLoaderData();
+    
     return <>
     <div className="base-layout">
-        <Link to={urls.home}><h1>{(import.meta.env.VITE_APP_NAME).toUpperCase()}</h1></Link>
+        <h1 id="home"><Link to={urls.home}>{(import.meta.env.VITE_APP_NAME).toUpperCase()}</Link></h1>
+        <nav>
         {
-        data&&data.name&&
-        <center>
-            <Form action={urls.home} method="post" id="logout-form"><button>Log out</button></Form>
-            <Link to={`${urls.profile}/${data.user}`}>My profile</Link>
-        </center>
+            (data&&data.name)?
+                <>
+                <Form id="logout" method="post" action={`${urls.home}`}>
+                    <button>Log out</button>
+                </Form>
+                <Link to={`${urls.profile}/${data.user}`}>My profile</Link>
+                </>
+            :
+                <>
+                <Link to={urls.signup}>Become a coach</Link>
+                <Link to={urls.login}>Login</Link>
+                </>
         }
+        </nav>
     </div>
     <userContext.Provider value={data}>
     <Outlet />
     </userContext.Provider>
     <footer>
-        COACH ROUTER
+        <h1><a href="#home">COACH ROUTER</a></h1>
+        <p>&copy; copyright {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME}</p>
     </footer>
     </>
 }

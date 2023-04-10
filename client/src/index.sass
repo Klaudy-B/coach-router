@@ -1,121 +1,142 @@
-@import "https://fonts.googleapis.com/css?family=Merriweather"
-$primary: rgba(burlywood, .5)
-$secondary: blue
-$success: green
+@import "https://fonts.googleapis.com/css?family=Poppins, Merriweather"
+$primary: blue
+$secondary: #ff5555
+$success: #00ff00
 $error: red
 
-@mixin box($padding: 5px, $maxWidth: 50%, $margin: 5px, $borderRadius: 5px)
-    border-radius: $borderRadius
-    padding: $padding
-    max-width: $maxWidth
-    margin: $margin auto
-    text-align: center
-
-@mixin flex-column
-    display: flex
-    flex-direction: column
-    justify-content: space-around
-    align-items: center
-
-body
-    font-family: Merriweather, "New Times Roman", sans-serif
-footer
-    text-align: center
-    margin-top: 10px
-p
-    margin: 5px
-
-.base-layout h1, .oops h1, .oops h2, .footer
-    text-align: center
-
-ul
-    padding: 0px
-
-.home
-    @include flex-column()
-    .welcome
-        @include flex-column()
-
-form    
-    display: block
-    @include box()
-    background-color: $primary
-    height: 60%
-    input
-        width: 50%
-    
-    *
-        display: block
-        margin: 10px auto
-        max-width: 80%
-    
-
-input
-    padding: 5px
-    border-radius: 5px
-
-button
-    @extend input
+@mixin button
+    display: inline-block
     background-color: $secondary
+    border: 2px solid $secondary
     color: white
+    padding: 5px
+    margin: auto 5px
+    text-decoration: none
+    border-radius: 5px
     cursor: pointer
 
-.success
-    text-align: center
-    color: $success
-    border: 2px solid $success
-    @include box()
-
-.error
-    text-align: center
-    color: $error
-    border: 2px solid $error
-    @include box()
-.coaches
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-around
-    .coach
-        background-color: $primary
-        padding: 5px
-        margin: 5px
-        border-radius: 10px
-.details
-    padding: 5px
-    border-radius: 10px
+body
+    background-image: url('background.png')
+    margin: 0px
+    padding: 0px
     color: white
-    background-color: $secondary
-a
-    text-decoration: none
-    color: $secondary
-nav
-    display: flex
-    justify-content: space-between
-    margin: 10px auto
-    a
-        margin-left: 5px
-        padding: 5px
-        background-color: $secondary
-        color: white
-        border-radius: 5px
-    a:hover
-        background-color: lightblue
+    background-color: rgba(black, 0.7)
+    font-size: 1.2rem
 .base-layout
-    center
+    background-color: $primary
+    padding: 10px
+    h1
+        text-align: center
+    nav
         display: flex
         justify-content: center
-        flex-wrap: nowrap
-        align-items: center
-    form
-        display: inline
-        background-color: inherit
-        padding: 0px
+        flex-wrap: wrap
+        gap: 5px
+    margin-bottom: 10px
+button, a
+    @include button
+button
+    padding: 10px
+button:hover, a:hover
+    @include button
+    color: $secondary
+    background-color: inherit
+button:hover
+    padding: 10px
+
+#home>a
+    background-color: inherit
+    border: 0px
+button:active, a:active
+    @include button
+    color: $secondary
+    background-color: gray
+button:active
+    padding: 10px
+#home>a:hover
+    color: $secondary
+p
+    text-align: center
+    font-size: 1.5rem
+p#home
+    @extend p
+    padding: 20px
+form
+    display: block
+    width: 30%
+    margin: auto calc(50% - 20px - 15%)
+    background-color: rgba(black, 0.5)
+    border-radius: 10px
+    padding: 20px
+    input
+        display: block
+        width: 70%
+        padding: 10px
+        border-radius: 5px
+select
+    padding: 10px
+    margin: auto 5px
+    option
+        padding: 10px
+form#logout
+    display: inline
+    max-width: 80px
+    background-color: $primary
+    border: 0px
+    margin: 0px
+    padding: 0px
+
+img
+    border-radius: 10px
+img#profile
+    width: 50%
+
+.details
+    padding: 20px
+    div:hover
+        color: white
+        border: 2px solid $secondary
+        border-radius: 5px
+        padding: 5px
+
+.coaches
+    margin: 30px 10px
+    display: flex
+    justify-content: center
+    gap: 10px
+    flex-wrap: wrap
+    .coach
+        border: 2px solid $secondary
+        border-radius: 5px
+        padding: 10px
         margin: 0px
-        width: 10%
-        button
+        max-width: 300px
+        div
+            text-align: center
+        .details
+            div:hover
+                color: white
+                border: 0px
+                padding: 0px
+        img
             width: 100%
-        button:hover
-            background-color: lightblue
-            color: white
-button a
+            height: 100%
+.success
+    border: 2px solid $success
+    color: $success
+    padding: 10px
+    border-radius: 5px
+    width: 60%
+    margin: 5px calc(50% - 10px - 30%)
+.error
+    border: 2px solid $error
+    color: $error
+    padding: 10px
+    border-radius: 5px
+    width: 60%
+    margin: 5px calc(50% - 10px - 30%)
+footer
+    text-align: center
     color: white
+    padding: 100px 10px
+    margin-top: 10px

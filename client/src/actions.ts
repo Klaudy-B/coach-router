@@ -2,7 +2,6 @@ import { serverError } from "./helpers";
 
 const action = async (
     formId: string,
-    initialString: string,
     loadingString: string,
     url: RequestInfo|URL,
     method: string,
@@ -11,6 +10,7 @@ const action = async (
     try{
         const button: any = document.querySelector(`form#${formId} > button`);
         button.disabled = true;
+        const initialString = button.innerText;
         button.innerText = loadingString;
         let res;
         if(method === 'GET'){
@@ -45,7 +45,7 @@ const action = async (
     }
 }
 export const ProfilePictureAction = async ()=>{
-    const picture = (document.querySelector('form#profile-picture-form>input[type=file]') as any).files[0];
+    const picture = (document.querySelector('form#profile-picture-form>input') as any).files[0];
     const formData = new FormData();
     formData.append('picture', picture);
     const button: any = document.querySelector('form#profile-picture-form > button');
@@ -64,7 +64,7 @@ export const ProfilePictureAction = async ()=>{
 
 export const signupAction = async (arg: any)=>{
     const formData = await arg.request.formData();
-    const data = await action('signup-form', 'Sign up', 'Signing up...', `${import.meta.env.VITE_SERVER}/auth/signup`, 'POST', {
+    const data = await action('signup-form', 'Signing up...', `${import.meta.env.VITE_SERVER}/auth/signup`, 'POST', {
         name: formData.get('name'),
         username: formData.get('username'),
         email: formData.get('email'),
@@ -75,7 +75,7 @@ export const signupAction = async (arg: any)=>{
 }
 export const loginAction = async (arg: any)=>{
     const formData = await arg.request.formData();
-    const data = await action('login-form', 'Continue', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/login`, 'POST', {
+    const data = await action('login-form', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/login`, 'POST', {
         username: formData.get('username'),
         password: formData.get('password')
     });
@@ -83,7 +83,7 @@ export const loginAction = async (arg: any)=>{
 }
 export const subjectAction = async (arg: any)=>{
     const formData = await arg.request.formData();
-    const data = await action('subject-form','Submit', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/subject`, 'POST', {
+    const data = await action('subject-form', 'Please wait...', `${import.meta.env.VITE_SERVER}/auth/subject`, 'POST', {
         category: formData.get('category'),
         name: formData.get('name'),
         price: formData.get('price')

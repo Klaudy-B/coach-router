@@ -33,7 +33,8 @@ const verifyUser = async (req, res, next)=>{
 }
 
 const staticMiddleware = (req, res, next)=>{
-    if(!existsSync(absolute+profilePictures+req.url)){
+    const pictureName = req.url.slice(1).replaceAll('%20', ' ');
+    if(!existsSync(absolute+profilePictures+'/'+pictureName)){
         return res.status(200).sendFile(absolute+profilePictures+johnDoe);
     }
     next();

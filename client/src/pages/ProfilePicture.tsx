@@ -29,9 +29,9 @@ const ProfilePicture: ()=>JSX.Element = () => {
     </Form>
     {
         data&&data.success?
-        <button><Link to={urls.home}>Done</Link></button>
+        <p><Link to={urls.home}>Done</Link></p>
         :
-        <button><Link to={urls.home}>Skip</Link></button>
+        <p><Link to={urls.home}>Skip</Link></p>
     }
     </center>
 }
