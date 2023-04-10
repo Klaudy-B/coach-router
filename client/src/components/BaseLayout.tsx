@@ -1,12 +1,10 @@
 import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
 import { userContext } from "../contexts";
-import { reducer, urls } from "../helpers";
-import { logoutAction } from "../actions";
-import { useReducer } from "react";
+import { urls } from "../helpers";
 
 const BaseLayout: ()=>JSX.Element = () => {
     const data: any = useLoaderData();
-
+    
     return <>
     <div className="base-layout">
         <h1 id="home"><Link to={urls.home}>{(import.meta.env.VITE_APP_NAME).toUpperCase()}</Link></h1>
