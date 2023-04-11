@@ -1,33 +1,22 @@
-import {  useContext, useReducer } from "react";
-import { Link } from "react-router-dom";
-import Loading from "../components/Loading";
+import { Form, useActionData, Link } from "react-router-dom";
+import { useContext } from "react";
 import { userContext } from "../contexts";
-import { urls, reducer } from "../helpers";
-import { useFetch } from "../hooks";
+import { urls } from "../helpers";
 
-const Home: ()=>JSX.Element = () => {
+const Search = () => {
     const data: any = useContext(userContext);
-    const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
-    useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`, undefined);
-    return <div className="home">
-        {
-            data&&data.error&&<p className="error">{data.error}</p>
-        }
-        <p id="home">A website to find coaches for helping you with certain subjects.</p>
-        {
-            data&&data.name&&<div className="welcome">
-                <p>Hi, {data.name}</p>
-                <div>
-                    <center><img id="profile" src={`${import.meta.env.VITE_SERVER}/static/${data.user}`} alt="profile-picture" /></center>
-                </div>
-                </div>
-        }
-        <div id="search-link"><Link to={urls.search}>Search a coach</Link></div>
+    const coaches: any = useActionData();
+
+
+    return <section id="search">
+        <Form id="search" method="post" action={urls.search}>
+            <span className="material-symbols-outlined">search</span>
+            <input type="text" id="search" name="search" placeholder="Search a coach" />
+            <button>Search</button>
+        </Form>
+
         {
             coaches&&coaches.error&&<p className="error">{coaches.error}</p>
-        }
-        {
-            coaches&&coaches.loading&&<Loading />
         }
         {
             coaches&&(coaches.length > 0)&&
@@ -39,7 +28,7 @@ const Home: ()=>JSX.Element = () => {
                             return;
                         }
                         if(data&&coach.username===data.user&&coaches.length===1){
-                            return <p>No coach.</p>;
+                            return <p>No match.</p>;
                         }
                         return <div key={index} className="coach">
                                 <div><img src={`${import.meta.env.VITE_SERVER}/static/${coach.username}`} alt="profile-picture" /></div>
@@ -60,7 +49,7 @@ const Home: ()=>JSX.Element = () => {
         {
             (coaches&&coaches.length === 0)&&<div className="coaches"><p>No match.</p></div>
         }
-    </div>
+    </section>
 }
  
-export default Home;
+export default Search;

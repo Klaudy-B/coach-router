@@ -4,7 +4,8 @@ export const urls = {
     home: '/',
     subject: '/subject',
     profilePicture: '/profile-picture',
-    profile: '/profile-page'
+    profile: '/profile-page',
+    search: '/search'
 }
 export const placeHolders = {
     emailPlaceHolder: 'xyz@example.com',

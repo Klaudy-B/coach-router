@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const { coachController } = require('../controllers/coachControllers');
+const { coachController, coachSearchController } = require('../controllers/coachControllers');
 
 router.get('/', coachController);
-router.get('/:username', coachController)
+router.get('/:username', coachController);
+router.get('/:pattern/pattern', coachSearchController);
 
 module.exports = router;
