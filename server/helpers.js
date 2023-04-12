@@ -29,7 +29,9 @@ module.exports.messages = {
     success: 'success',
     unauthorized: 'unauthorized',
     profilePictureSuccess: 'Profile picture uploaded successfully.',
-    noUpload: 'No files were uploaded.'
+    noUpload: 'No files were uploaded.',
+    noSearchPattern: 'You did not type a search pattern.',
+    userSchemaProps: ['username', 'name', 'subject', 'email', 'price', 'category']
 }
 module.exports.paths = {
     absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server',

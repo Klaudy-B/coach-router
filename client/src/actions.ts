@@ -23,7 +23,7 @@ const action = async (
             }
             button.disabled = false;
             button.innerText = initialString;
-            return {ok: res.ok};
+            return await res.json();
         }
         res = await fetch(url,{
             method,
@@ -98,4 +98,9 @@ export const logoutAction = async ()=>{
         throw Error(serverError);
     }
     return null;
+}
+export const coachesAction = async(arg: any)=>{
+    const formData = await arg.request.formData();
+    const data = await action('search', 'Searching...', `${import.meta.env.VITE_SERVER}/coaches/${formData.get('search')}/pattern`, 'GET');
+    return data;
 }
