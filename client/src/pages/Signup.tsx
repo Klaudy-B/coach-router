@@ -1,7 +1,8 @@
 import { Form, useActionData, Link } from "react-router-dom";
-import { placeHolders, urls } from "../helpers";
+import { placeHolders, setTitle, urls } from "../helpers";
 
 const Signup: ()=> JSX.Element = () => {
+    setTitle('Sign up');
     const data: any = useActionData();
     if(data&&data.success){
         return <div className="success">

@@ -1,9 +1,10 @@
 import { Form, useActionData, Link } from "react-router-dom";
 import { useContext } from "react";
 import { userContext } from "../contexts";
-import { placeHolders, urls } from "../helpers";
+import { placeHolders, setTitle, urls } from "../helpers";
 
 const Search = () => {
+    setTitle('Search page');
     const data: any = useContext(userContext);
     const coaches: any = useActionData();
 

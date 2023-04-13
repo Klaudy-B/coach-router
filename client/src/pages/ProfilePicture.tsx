@@ -1,7 +1,8 @@
 import { Form, Link, useActionData } from "react-router-dom";
-import { urls } from "../helpers";
+import { setTitle, urls } from "../helpers";
 
 const ProfilePicture: ()=>JSX.Element = () => {
+    setTitle('Profile picture set up');
     const data: any = useActionData();
     if(data&&data.error){
         throw Error(data.error);

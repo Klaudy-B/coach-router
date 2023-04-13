@@ -1,7 +1,8 @@
 import { Form, Navigate, useActionData, Link } from "react-router-dom";
-import { placeHolders, urls } from "../helpers";
+import { placeHolders, setTitle, urls } from "../helpers";
 
 const Login: ()=> JSX.Element = () => {
+    setTitle('Login');
     const data: any = useActionData();
     if(data&&data.sessionExpired){
         throw Error(data.sessionExpired);

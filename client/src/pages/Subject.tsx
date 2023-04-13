@@ -1,7 +1,8 @@
 import { Form, useActionData, useLoaderData, Link } from "react-router-dom";
-import { serverError, urls } from "../helpers";
+import { serverError, setTitle, urls } from "../helpers";
 
 const Subject: ()=>JSX.Element = () => {
+    setTitle('Subject');
     const data: any = useLoaderData();
     const actionData: any = useActionData();
     if(data&&!data.length){

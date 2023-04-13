@@ -2,10 +2,11 @@ import {  useContext, useReducer } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import { userContext } from "../contexts";
-import { urls, reducer } from "../helpers";
+import { urls, reducer, setTitle } from "../helpers";
 import { useFetch } from "../hooks";
 
 const Home: ()=>JSX.Element = () => {
+    setTitle('Home');
     const data: any = useContext(userContext);
     const [ coaches, dispatch ] = useReducer(reducer, {loading: true});
     useFetch(dispatch, `${import.meta.env.VITE_SERVER}/coaches`, undefined);
