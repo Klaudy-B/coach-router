@@ -1,7 +1,7 @@
 import { Form, useActionData, Link } from "react-router-dom";
 import { useContext } from "react";
 import { userContext } from "../contexts";
-import { urls } from "../helpers";
+import { placeHolders, urls } from "../helpers";
 
 const Search = () => {
     const data: any = useContext(userContext);
@@ -11,7 +11,7 @@ const Search = () => {
     return <section id="search">
         <Form id="search" method="post" action={urls.search}>
             <span className="material-symbols-outlined">search</span>
-            <input type="text" id="search" name="search" placeholder="Search a coach" />
+            <input type="text" id="search" name="search" placeholder={placeHolders.searchCoachPlaceHolder} />
             <button>Search</button>
         </Form>
 
