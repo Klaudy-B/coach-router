@@ -22,7 +22,7 @@ const Home: ()=>JSX.Element = () => {
                 </div>
                 </div>
         }
-        <div id="search-link"><Link to={urls.search}>Search a coach</Link></div>
+        <div id="search-link"><Link to={urls.search}>Search coaches</Link></div>
         {
             coaches&&coaches.error&&<p className="error">{coaches.error}</p>
         }
