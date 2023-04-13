@@ -2,10 +2,11 @@ import { useContext, useReducer } from "react";
 import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import { userContext } from "../contexts";
-import { reducer, urls } from "../helpers";
+import { reducer, setTitle, urls } from "../helpers";
 import { useFetch } from "../hooks";
 
 const Profile: () => JSX.Element = () => {
+    setTitle('My profile');
     const username = useParams().username;
     const user: any = useContext(userContext);
     const [ coach, dispatch ] = useReducer(reducer, {loading: true});
