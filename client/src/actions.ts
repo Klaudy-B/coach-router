@@ -122,3 +122,19 @@ export const passwordAction = async (arg: any)=>{
     })
     return data;
 }
+export const EmailAction = async (arg: any)=>{
+    const formData = await arg.request.formData();
+    const data = await action("email-form", 'Changing email...', `${import.meta.env.VITE_SERVER}/auth/change-email`, 'PATCH', {
+        email: formData.get('email'),
+        password: formData.get('password')
+    })
+    return data;
+}
+export const deleteAccountAction = async (arg: any)=>{
+    const formData = await arg.request.formData();
+    const body = {
+        password: formData.get('password')
+    }
+    const data = await action('delete-account-form', 'Deleting account...', `${import.meta.env.VITE_SERVER}/auth/delete-account`, 'DELETE', body);
+    return data;
+}

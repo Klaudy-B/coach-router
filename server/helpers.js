@@ -22,6 +22,10 @@ module.exports.messages = {
         return `The username ${username} is already taken.`
     },
     usernameChanged: 'Username changed successfully.',
+    passwordChanged: 'Password changed successfully.',
+    emailChanged: 'email changed successfully',
+    accountDeleted: 'Your account has been deleted successfully.',
+    unauthorized: 'Unauthorized',
     invalidToken: 'Invalid token.',
     accountCreated: 'Your account has been created sucessfully.',
     incorrectPassword: 'Incorrect password.',

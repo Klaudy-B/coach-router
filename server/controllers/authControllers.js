@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const { verify } = require('jsonwebtoken');
 const { genSalt, hash, compare } = require('bcrypt');
+const { default: isEmail } = require('validator/lib/isEmail');
 const {
     createToken,
     userValidator,
@@ -14,7 +15,11 @@ const {
         success,
         profilePictureSuccess,
         noUpload,
-        usernameChanged
+        usernameChanged,
+        passwordChanged,
+        emailChanged,
+        accountDeleted,
+        unauthorized
     },
     paths: { absolute, profilePictures }
 } = require('../helpers');
@@ -167,3 +172,70 @@ module.exports.changeUsernameController = async (req, res)=>{
         signupErrorHandler(error, res);
     }
 }
+module.exports.changePasswordController = async (req, res)=>{
+    try{
+        const { password1, password2, password3 } = req.body;
+        const user = await User.findOne({ username: req.username });
+        const auth = await compare(password1, user.password);
+        if(!auth){
+            throw {errorFields: {password1: incorrectPassword} };
+        }
+        if(!password2){
+            throw {errorFields: {password2: provideNewPassword} };
+        }
+        if(password2.length<4){
+            throw { errorFields: {password2: passwordMinLength} };
+        }
+        if(password3 !== password2){
+            throw { errorFields: {password3: passwordsDontMatch} };
+        }
+        const salt = await genSalt(10);
+        user.password = await hash(password2, salt);
+        await user.save();
+        return res.status(200).json({success: passwordChanged});
+    }catch(error){
+        signupErrorHandler(error, res);
+    }
+}
+module.exports.changeEmailController = async (req, res)=>{
+    try{
+        const { email, password } = req.body;
+        const user = await User.findOne({ username: req.username });
+        const auth = await compare(password, user.password);
+        if(!auth){
+            throw { errorFields: {password: incorrectPassword} };
+        }
+        const bool = isEmail(email);
+        if(!bool){
+            throw { errorFields: {email: emailNotValid(email)} };
+        }
+        if(user.email !== email){
+            user.verified = false;
+            user.emailCode = {value: ''};
+        }
+        user.email = email;
+        await user.save();
+        return res.status(200).json({success: emailChanged});
+    }catch(error){
+        signupErrorHandler(error, res);
+    }
+}
+module.exports.deleteAccountController = async (req, res)=>{
+    try{
+         const { password } = req.body;
+         const user = await User.findOne({ username: req.username });
+         if(!user){
+             setCookie(res, process.env.APP_NAME, '', 1);
+             return res.status(401).json({error: unauthorized});
+         }
+         const auth = await compare(password, user.password);
+         if(!auth){
+             return res.status(401).json({errorFields: {password: incorrectPassword}});
+         }
+         await User.findOneAndDelete({username: user.username});
+         setCookie(res, process.env.APP_NAME, '', 1);
+         return res.status(200).json({success: accountDeleted});
+    }catch(error){
+     generalErrorHandler(error, res);
+    }
+ }
