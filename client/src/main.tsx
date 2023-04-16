@@ -11,6 +11,11 @@ const Username: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./compo
 const Password: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Password'));
 const Email: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Email'));
 const DeleteAccount: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/DeletAccount'));
+const ForgotPassword: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/ForgotPassword'));
+const VerifyEmail: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/VerifyEmail'));
+const RecoverPassword: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/RecoverPassword'));
+const ForgotUsername: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/ForgotUsername'));
+const ChangeSubject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/ChangeSubject'));
 
 import Oops from './components/Oops';
 
@@ -23,8 +28,9 @@ const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('.
 const Profile: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Profile'));
 const Search: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Search'));
 const Settings: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Settings'));
+const Bio: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Bio'));
 
-import { coachesAction, deleteAccountAction, EmailAction, loginAction, logoutAction, passwordAction, ProfilePictureAction, signupAction, subjectAction, usernameAction } from './actions';
+import { bioAction, changeSubjectAction, coachesAction, deleteAccountAction, EmailAction, forgotPasswordAction, forgotUsernameAction, loginAction, logoutAction, passwordAction, ProfilePictureAction, recoverPasswordAction, signupAction, subjectAction, usernameAction, verifyEmailAction } from './actions';
 
 import { checkLoginStateLoader, subjectLoader } from './loaders';
 
@@ -40,10 +46,16 @@ const router = createBrowserRouter(
       <Route path='search' element={<Search />} action={coachesAction} />
       <Route path='settings' element={<Settings />} errorElement={<Oops />}>
         <Route path='username' element={<Username />} action={usernameAction} />
+        <Route path='change-subject' element={<ChangeSubject />} loader={subjectLoader} action={changeSubjectAction} />
         <Route path='password' element={<Password />} action={passwordAction} />
         <Route path='change-email' element={<Email />} action={EmailAction} />
         <Route path='delete-account' element={<DeleteAccount />} action={deleteAccountAction} />
+        <Route path='forgot-password' element={<ForgotPassword />} action={forgotPasswordAction} />
+        <Route path='verify-email' element={<VerifyEmail />} action={verifyEmailAction} />
+        <Route path='recover-password' element={<RecoverPassword />} action={recoverPasswordAction} />
+        <Route path='bio' element={<Bio />} action={bioAction} />
       </Route>
+      <Route path='forgot-username' element={<ForgotUsername />} action={forgotUsernameAction} />
       <Route path='*' element={<NotFound />} />
     </Route>
   )

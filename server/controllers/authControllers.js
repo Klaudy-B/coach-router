@@ -2,12 +2,19 @@ const { User } = require('../models');
 const { verify } = require('jsonwebtoken');
 const { genSalt, hash, compare } = require('bcrypt');
 const { default: isEmail } = require('validator/lib/isEmail');
+const { createTransport } = require('nodemailer');
 const {
     createToken,
     userValidator,
     setCookie,
     messages: {
         userNotFound,
+        verificationEmailHTML,
+        codeDoesntMatch,
+        noBio,
+        noRecoveryCode,
+        verificationEmailMessageTitle,
+        codeExpired,
         invalidToken,
         accountCreated,
         incorrectPassword,
@@ -19,7 +26,15 @@ const {
         passwordChanged,
         emailChanged,
         accountDeleted,
-        unauthorized
+        unauthorized,
+        provideNewPassword,
+        passwordMinLength,
+        passwordsDontMatch,
+        noEmailCode,
+        emailVerified,
+        provideNewSubject,
+        provideNewUsername,
+        subjectChanged,
     },
     paths: { absolute, profilePictures }
 } = require('../helpers');
@@ -42,13 +57,13 @@ module.exports.checkLoginStateController = async (req, res)=>{
             }
             return decodedToken;
         });
-        const user = await User.findOne({_id: decodedToken.id}).select('name username');
+        const user = await User.findOne({_id: decodedToken.id}).select('name username email verified');
         if(!user){
             setCookie(res, process.env.APP_NAME, '', 1);
             throw { error: invalidToken};
         }
         setCookie(res, process.env.APP_NAME, req.cookies[process.env.APP_NAME]);
-        return res.status(200).json({ user: user.username, name: user.name});
+        return res.status(200).json({ user: user.username, name: user.name, email: user.email, verified: user.verified });
     }catch(error){
         generalErrorHandler(error, res);
     }
@@ -64,7 +79,12 @@ module.exports.signupController = async (req, res)=>{
                     name,
                     username,
                     password,
-                    email
+                    email,
+                    bio: `Hi, i am ${name}.`,
+                    verified: false,
+                    emailCode: {value: ''},
+                    recoveryCode: {value: ''},
+                    recoveryAuthorized: {value: false}
             }
          );
         const token = createToken(user._id);
@@ -136,6 +156,66 @@ module.exports.subjectController = async (req, res)=>{
         generalErrorHandler(error, res);
     }
 }
+module.exports.verifyEmailController = async (req, res)=>{
+    if(req.method === 'GET'){
+        try{
+            const user = await User.findOne({ username: req.username });
+            let verificationCode = '';
+            for(let i=0; i<4; i++){
+                verificationCode += Math.round( Math.random()*9 ).toString();
+            }
+            const salt = await genSalt(10);
+            const hashedVerificationCode = await hash(verificationCode, salt);
+            user.emailCode = {value: hashedVerificationCode};
+            await user.save();
+            const transporter = createTransport(
+                {
+                    service: process.env.EMAIL_SERVICE,
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.EMAIL_PASS
+                    }
+                }
+            )
+            await transporter.sendMail(
+                {
+                    from: process.env.EMAIL,
+                    to: `${user.email}`,
+                    subject: verificationEmailMessageTitle,
+                    html: verificationEmailHTML(verificationCode)
+                }
+            )
+            return res.status(200).json({codeSent: true});
+        }catch(error){
+            generalErrorHandler(error, res);
+        }
+    }
+    if(req.method === 'POST'){
+        try{
+            const user = await User.findOne({ username: req.username });
+            if(!user.emailCode.value){
+                return res.status(401).json({error: noEmailCode});
+            }
+            const expire = (Date.now()-user.emailCode.updatedAt)/60000;
+            if(expire>=10){
+                user.emailCode = {value: ''};
+                await user.save();
+                return res.status(401).json({codeSent: true, error: codeExpired});
+            }
+            const { verificationCode } = req.body;
+            const auth = await compare(verificationCode, user.emailCode.value);
+            if(!auth){
+                return res.status(401).json({codeSent: true, noMatch: codeDoesntMatch});
+            }
+            user.verified = true;
+            user.emailCode.value = '';
+            await user.save();
+            return res.status(200).json({success: emailVerified});
+        }catch(error){
+            generalErrorHandler(error, res);
+        }
+    }
+}
 module.exports.profilePictureController = async (req, res)=>{
     try{
         const pictureName = req.username;
@@ -170,6 +250,42 @@ module.exports.changeUsernameController = async (req, res)=>{
         return res.status(200).json({success: usernameChanged});
     }catch(error){
         signupErrorHandler(error, res);
+    }
+}
+module.exports.changeSubjectController = async (req, res)=>{
+    try{
+        const { subjectName, category, price, password } = req.body;
+        const user = await User.findOne({username: req.username});
+        const auth = await compare(password, user.password);
+        if(!auth){
+            throw{errorFields: {password: incorrectPassword}};
+        }
+        if(!subjectName){
+            throw {errorFields: {subject: provideNewSubject}};
+        }
+        if(!category){
+            throw {errorFields: {category: provideNewSubject}};
+        }
+        if(!price){
+            throw {errorFields: {price: provideNewSubject}};
+        }
+        user.subject = {name: subjectName, price, category};
+        await user.save();
+        return res.status(200).json({success: subjectChanged});
+    }catch(error){
+        signupErrorHandler(error, res);
+    }
+}
+module.exports.bioController = async (req, res)=>{
+    try{
+        const { bio } = req.body;
+        if(!bio){
+            throw {error: noBio};
+        }
+        await User.findOneAndUpdate({username: req.username}, { bio });
+        return res.status(200).json({success})
+    }catch(error){
+        generalErrorHandler(error, res);
     }
 }
 module.exports.changePasswordController = async (req, res)=>{
@@ -218,6 +334,101 @@ module.exports.changeEmailController = async (req, res)=>{
         return res.status(200).json({success: emailChanged});
     }catch(error){
         signupErrorHandler(error, res);
+    }
+}
+module.exports.recoverPasswordController = async (req, res)=>{
+    try{
+        const user = await User.findOne({ username: req.username });
+        if(!user.recoveryAuthorized.value){
+            return res.status(401).json({error: unauthorized});
+        }
+        const { password2, password3 } = req.body;
+        if(!password2){
+            throw {errorFields: {password2: provideNewPassword} };
+        }
+        if(password2.length<8){
+            throw { errorFields: {password2: passwordMinLength} };
+        }
+        if(password3 !== password2){
+            throw { errorFields: {password3: passwordsDontMatch} };
+        }
+        const salt = await genSalt(10);
+        user.password = await hash(password2, salt);
+        user.recoveryAuthorized = {value: false};
+        await user.save();
+        return res.status(200).json({success: passwordChanged});
+    }catch(error){
+        signupErrorHandler(error, res);
+    }
+}
+module.exports.forgotPasswordController = async (req, res)=>{
+    if(req.method === 'GET'){
+        try{
+            const user = await User.findOne({ username: req.username });
+            let code = '';
+            for(let i=0; i<4; i++){
+                code += Math.round( Math.random()*9 ).toString();
+            }
+            const salt = await genSalt(10);
+            const hashedCode = await hash(code, salt);
+            user.recoveryCode = {value: hashedCode};
+            await user.save();
+            const transporter = createTransport(
+                {
+                    service: process.env.EMAIL_SERVICE,
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.EMAIL_PASS
+                    }
+                }
+            )
+            await transporter.sendMail(
+                {
+                    from: process.env.EMAIL,
+                    to: `${user.email}`,
+                    subject: verificationEmailMessageTitle,
+                    html: verificationEmailHTML(code)
+                }
+            )
+            return res.status(200).json({codeSent: true});
+        }catch(error){
+            generalErrorHandler(error, res);
+        }
+    }
+    if(req.method === 'POST'){
+        try{
+            const user = await User.findOne({ username: req.username });
+            if(!user.recoveryCode.value){
+                return res.status(401).json({error: noRecoveryCode});
+            }
+            const expire = (Date.now()-user.recoveryCode.updatedAt)/60000;
+            if(expire>=10){
+                user.recoveryCode = {value: ''};
+                await user.save();
+                return res.status(401).json({codeSent: true, error: codeExpired});
+            }
+            const { verificationCode } = req.body;
+            const auth = await compare(verificationCode, user.recoveryCode.value);
+            if(!auth){
+                return res.status(401).json({codeSent: true, noMatch: codeDoesntMatch});
+            }
+            user.recoveryAuthorized.value = true;
+            user.recoveryCode.value = '';
+            await user.save();
+            return res.status(200).json({authorized: user.recoveryAuthorized.value});
+        }catch(error){
+            generalErrorHandler(error, res);
+        }
+    }
+}
+module.exports.forgotUsernameController = async (req, res)=>{
+    try{
+        const { username } = req.body;
+        const usernames = await User.find({username: new RegExp(`${username}`, 'i')}).select('username -_id');
+        return res.status(200).json(usernames);
+        
+    }catch(error){
+        generalErrorHandler(error, res);
     }
 }
 module.exports.deleteAccountController = async (req, res)=>{

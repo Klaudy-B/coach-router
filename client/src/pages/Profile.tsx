@@ -31,6 +31,13 @@ const Profile: () => JSX.Element = () => {
         <div><b>Category: </b>{coach.subject&&coach.subject.category}</div>
         <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
         </div>
+        <div>
+            <p><b>Bio</b></p>
+            <form>
+                <p>{coach.bio}</p>
+                {user.user&&user.user===username&&<p><Link to={`${urls.settings}${urls.bio}`}>Update my bio</Link></p>}
+            </form>
+        </div>
         </>
     }else{
         return <div className="error">No result.</div>

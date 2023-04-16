@@ -10,6 +10,7 @@ const Settings: ()=>JSX.Element = () => {
             <li><Link to={`${urls.settings}${urls.password}`}>Change my password</Link></li>
             <li><Link to={`${urls.settings}${urls.verifyEmail}`}>Verify my email</Link></li>
             <li><Link to={`${urls.settings}${urls.changeEmail}`}>Change my email</Link></li>
+            <li><Link to={`${urls.settings}${urls.changeSubject}`}>Change Subject</Link></li>
             <li><Link to={`${urls.settings}${urls.deleteAccount}`}>Delete my account</Link></li>
         </ul>
         <Outlet />
