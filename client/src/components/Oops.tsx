@@ -4,6 +4,7 @@ import { setTitle } from "../helpers";
 const Oops: ()=>JSX.Element = () => {
     setTitle('Oops');
     const error: any = useRouteError();
+    console.log(error)
     return <div className="oops">
         <h1>Oops!</h1>
         <h2>Something went wrong.</h2>

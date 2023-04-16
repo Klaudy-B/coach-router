@@ -19,7 +19,7 @@ const Profile: () => JSX.Element = () => {
     }
     if(coach&&coach.name){
     return <>
-        {user.user&&user.user===username&&<Link to={urls.profilePicture}>Change my profile picture</Link>}
+        {user.user&&user.user===username&&<Link to={urls.settings}>Settings</Link>}
         <center>
             <img id="profile" src={`${import.meta.env.VITE_SERVER}/static/${username}`} alt="profile-picture" /><br />
         </center>
@@ -30,6 +30,13 @@ const Profile: () => JSX.Element = () => {
         <div><b>Subject: </b>{coach.subject&&coach.subject.name}</div>
         <div><b>Category: </b>{coach.subject&&coach.subject.category}</div>
         <div><b>Hourly price: </b>${coach.subject&&coach.subject.price}</div>
+        </div>
+        <div>
+            <p><b>Bio</b></p>
+            <form>
+                <p>{coach.bio}</p>
+                {user.user&&user.user===username&&<p><Link to={`${urls.settings}${urls.bio}`}>Update my bio</Link></p>}
+            </form>
         </div>
         </>
     }else{

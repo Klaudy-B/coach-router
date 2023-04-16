@@ -16,11 +16,32 @@ module.exports.setCookie = (res, key, value, maxAge)=>{
 }
 module.exports.messages = {
     userNotFound: (username)=>{
-        return `There is no user named ${username}.`
+        return `There is no user named ${username}.`;
     },
     usernameTaken: (username)=>{
-        return `The username ${username} is already taken.`
+        return `The username ${username} is already taken.`;
     },
+    verificationEmailHTML: (code)=>{
+        return `<b>${code}</b> is your verification code. It will expire in 10 minutes.`;
+    },
+    noBio: 'You did not provide any bio.',
+    provideNewSubject: 'You need to provide a new subject name if you want to update it.',
+    subjectChanged: 'Your subject has been updated successfully.',
+    provideNewUsername: 'You need to provide a new username if you want to change it.',
+    verificationEmailMessageTitle: 'Your verification code',
+    noRecoveryCode: "You don't have a verification code.",
+    codeExpired: 'Code expired.',
+    codeDoesntMatch: 'The code does not match.',
+    noEmailCode: "You don't have a verification code.",
+    emailVerified: 'Your email is verified.',
+    usernameChanged: 'Username changed successfully.',
+    passwordChanged: 'Password changed successfully.',
+    emailChanged: 'email changed successfully',
+    accountDeleted: 'Your account has been deleted successfully.',
+    unauthorized: 'Unauthorized',
+    provideNewPassword: 'You need to provide a new password.',
+    passwordMinLength: 'Password must have at least 8 characters.',
+    passwordsDontMatch: "The password confirmation don't match the password you provided.",
     invalidToken: 'Invalid token.',
     accountCreated: 'Your account has been created sucessfully.',
     incorrectPassword: 'Incorrect password.',
@@ -35,7 +56,7 @@ module.exports.messages = {
     userSubjectProps: ['category', 'name']
 }
 module.exports.paths = {
-    absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server',
+    absolute: __dirname,
     profilePictures: '/profile_pictures',
     johnDoe: '/john_doe/johndoe.jpg'
 }

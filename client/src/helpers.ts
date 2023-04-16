@@ -5,7 +5,18 @@ export const urls = {
     subject: '/subject',
     profilePicture: '/profile-picture',
     profile: '/profile-page',
-    search: '/search'
+    search: '/search',
+    username: '/username',
+    password: '/password',
+    deleteAccount: '/delete-account',
+    changeEmail: '/change-email',
+    changeSubject: '/change-subject',
+    verifyEmail: '/verify-email',
+    settings: '/settings',
+    forgotPassword: '/forgot-password',
+    forgotUsername: '/forgot-username',
+    recoverPassword: '/recover-password',
+    bio: '/bio'
 }
 export const placeHolders = {
     emailPlaceHolder: 'xyz@example.com',
