@@ -13,7 +13,8 @@ const {
         sessionExpired,
         success,
         profilePictureSuccess,
-        noUpload
+        noUpload,
+        usernameChanged
     },
     paths: { absolute, profilePictures }
 } = require('../helpers');
@@ -21,6 +22,8 @@ const {
     signupErrorHandler,
     generalErrorHandler,
 } = require('../errorhandlers/authErrorHandlers');
+const { renameSync } = require('fs');
+const { join } = require('path');
 
 module.exports.checkLoginStateController = async (req, res)=>{
     try{
@@ -142,5 +145,25 @@ module.exports.profilePictureController = async (req, res)=>{
           })
     }catch(error){
         generalErrorHandler(error, res);
+    }
+}
+module.exports.changeUsernameController = async (req, res)=>{
+    try{
+        const { username, password } = req.body;
+        const user = await User.findOne({username: req.username});
+        const auth = await compare(password, user.password);
+        if(!auth){
+            throw{errorFields: {password: incorrectPassword}};
+        }
+        if(!username){
+            throw {errorFields: {username: provideNewUsername}};
+        }
+        const oldUsername = user.username;
+        user.username = username;
+        await user.save();
+        renameSync(join(__dirname, `../profile_pictures/${oldUsername}`), join(__dirname, `../profile_pictures/${username}`));
+        return res.status(200).json({success: usernameChanged});
+    }catch(error){
+        signupErrorHandler(error, res);
     }
 }

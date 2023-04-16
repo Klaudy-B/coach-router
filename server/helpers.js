@@ -21,6 +21,7 @@ module.exports.messages = {
     usernameTaken: (username)=>{
         return `The username ${username} is already taken.`
     },
+    usernameChanged: 'Username changed successfully.',
     invalidToken: 'Invalid token.',
     accountCreated: 'Your account has been created sucessfully.',
     incorrectPassword: 'Incorrect password.',
@@ -35,7 +36,7 @@ module.exports.messages = {
     userSubjectProps: ['category', 'name']
 }
 module.exports.paths = {
-    absolute: 'C:/Users/claud/Downloads/projects/coachrouter/server',
+    absolute: __dirname,
     profilePictures: '/profile_pictures',
     johnDoe: '/john_doe/johndoe.jpg'
 }

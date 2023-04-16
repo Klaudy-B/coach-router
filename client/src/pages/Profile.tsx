@@ -19,7 +19,7 @@ const Profile: () => JSX.Element = () => {
     }
     if(coach&&coach.name){
     return <>
-        {user.user&&user.user===username&&<Link to={urls.profilePicture}>Change my profile picture</Link>}
+        {user.user&&user.user===username&&<Link to={urls.settings}>Settings</Link>}
         <center>
             <img id="profile" src={`${import.meta.env.VITE_SERVER}/static/${username}`} alt="profile-picture" /><br />
         </center>

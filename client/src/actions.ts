@@ -33,6 +33,7 @@ const action = async (
                 "content-type": "application/json"
             }
         })
+        console.log(res)
         if(res.status === 500){
             throw Error(serverError);
         }
@@ -102,5 +103,22 @@ export const logoutAction = async ()=>{
 export const coachesAction = async(arg: any)=>{
     const formData = await arg.request.formData();
     const data = await action('search', 'Searching...', `${import.meta.env.VITE_SERVER}/coaches/${formData.get('search')}/pattern`, 'GET');
+    return data;
+}
+export const usernameAction = async (arg: any)=>{
+    const formData = await arg.request.formData();
+    const data = await action("username-form", 'Changing your username...', `${import.meta.env.VITE_SERVER}/auth/change-username`, 'PATCH', {
+        username: formData.get('new-username'),
+        password: formData.get('password')
+    });
+    return data;
+}
+export const passwordAction = async (arg: any)=>{
+    const formData = await arg.request.formData();
+    const data = await action("password-form", 'Changing your password...', `${import.meta.env.VITE_SERVER}/auth/change-password`, 'PATCH', {
+        password1: formData.get('current-password'),
+        password2: formData.get('new-password'),
+        password3: formData.get('new-password-confirmation')
+    })
     return data;
 }

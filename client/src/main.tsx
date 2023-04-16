@@ -7,6 +7,8 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 
 import Loading from './components/Loading';
 const BaseLayout: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/BaseLayout'));
+const Username: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Username'));
+const Password: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Password'));
 import Oops from './components/Oops';
 
 const Home: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Home'));
@@ -17,8 +19,9 @@ const Subject: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/
 const ProfilePicture: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/ProfilePicture'));
 const Profile: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Profile'));
 const Search: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Search'));
+const Settings: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Settings'));
 
-import { coachesAction, loginAction, logoutAction, ProfilePictureAction, signupAction, subjectAction } from './actions';
+import { coachesAction, loginAction, logoutAction, passwordAction, ProfilePictureAction, signupAction, subjectAction, usernameAction } from './actions';
 
 import { checkLoginStateLoader, subjectLoader } from './loaders';
 
@@ -32,6 +35,10 @@ const router = createBrowserRouter(
       <Route path='profile-picture' element={<ProfilePicture />} action={ProfilePictureAction} />
       <Route path='profile-page/:username' element={<Profile />} />
       <Route path='search' element={<Search />} action={coachesAction} />
+      <Route path='settings' element={<Settings />} errorElement={<Oops />}>
+        <Route path='username' element={<Username />} action={usernameAction} />
+        <Route path='password' element={<Password />} action={passwordAction} />
+      </Route>
       <Route path='*' element={<NotFound />} />
     </Route>
   )
