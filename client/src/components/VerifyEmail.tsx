@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import { useActionData, Form, Link } from "react-router-dom";
-import { userContext } from "../contexts";
+import { useActionData, Form, Link, useLoaderData } from "react-router-dom";
 import { setTitle, urls } from "../helpers";
 
 const VerifyEmail = () => {
     setTitle('Verify email');
-    const { verified, email } = (useContext(userContext) as any);
+    const { verified, email } = (useLoaderData() as any);
     const data: any = useActionData();
     if(!data&&verified){
         return <p className="success">Your email is already verified.</p>

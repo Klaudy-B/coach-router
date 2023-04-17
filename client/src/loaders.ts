@@ -15,3 +15,6 @@ export const checkLoginStateLoader = async ()=>{
 export const subjectLoader = async ()=>{
     return await loader(`${import.meta.env.VITE_SERVER}/category`);
 }
+export const forgotPasswordLoader = async ()=>{
+    return await loader(`${import.meta.env.VITE_SERVER}/auth/forgot-password-loader`);
+}

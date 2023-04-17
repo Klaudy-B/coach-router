@@ -1,11 +1,12 @@
-import { Form, useActionData, useLoaderData } from "react-router-dom";
+import { Form, useActionData, useLoaderData, Link } from "react-router-dom";
 import { setTitle, urls } from "../helpers";
 
 const ChangeSubject = () => {
     setTitle('Change subject');
     const categories: any = useLoaderData();
     const data: any = useActionData();
-    return <Form id="change-subject-form" method="post" action={`${urls.settings}${urls.changeSubject}`}>
+    return <>
+    <Form id="change-subject-form" method="post" action={`${urls.settings}${urls.changeSubject}`}>
         <label>Category:</label>
         <select name="category" id="category" required>
             {
@@ -33,6 +34,9 @@ const ChangeSubject = () => {
         <button>Change subject</button>
         {data&&data.success&&<div className="success">{data.success}</div>}
     </Form>
+    <div id="forgot"><Link to={`${urls.settings}${urls.forgotPassword}`}>I forgot my password</Link></div>
+    </>
+
 }
  
 export default ChangeSubject;

@@ -14,7 +14,8 @@ const Login: ()=> JSX.Element = () => {
         return <Navigate to={urls.home} />
     }
     if(data&&data.password){
-        return <Form id="login-form" method="post" action={urls.login}>
+        return <>
+        <Form id="login-form" method="post" action={urls.login}>
         <label>Password:</label>
         <input type="password" name="password" placeholder={placeHolders.password1PlaceHolder} required />
         {
@@ -29,8 +30,11 @@ const Login: ()=> JSX.Element = () => {
         }
         <button>Log in</button>
     </Form>
+    <div id="forgot"><Link to={`${urls.settings}${urls.forgotPassword}`}>I forgot my password</Link></div>
+    </>
 }
-    return <Form id="login-form" method="post" action={urls.login}>
+    return <>
+    <Form id="login-form" method="post" action={urls.login}>
         <label>Username:</label>
         <input type="text" name="username" required />
         {
@@ -43,6 +47,8 @@ const Login: ()=> JSX.Element = () => {
         <button>Continue</button>
         <div>Don't have an account yet? <Link to={urls.signup}>Sign up</Link>.</div>
     </Form>
+    <div id="forgot"><Link to={`${urls.forgotUsername}`}>I forgot my username</Link></div>
+    </>
 }
  
 export default Login;

@@ -21,7 +21,7 @@ const Password: ()=>JSX.Element = () => {
         <button>Change password</button>
         {data&&data.success&&<div className="success">{data.success}</div>}
     </Form>
-    <Link to={`${urls.settings}${urls.forgotPassword}`}>I forgot my password</Link>
+    <div id="forgot"><Link to={`${urls.settings}${urls.forgotPassword}`}>I forgot my password</Link></div>
     </>
 }
  
