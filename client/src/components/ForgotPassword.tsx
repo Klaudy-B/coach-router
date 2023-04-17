@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import { useActionData, Form, Link, Navigate } from "react-router-dom";
-import { userContext } from "../contexts";
+import { useActionData, Form, Link, Navigate, useLoaderData } from "react-router-dom";
 import { setTitle, urls } from "../helpers";
 
 const ForgotPassword = () => {
     setTitle('Forgot password');
-    const { verified, user, email } = (useContext(userContext) as any);
+    const { verified, user, email } = (useLoaderData() as any);
     const data: any = useActionData();
     if(!data&&user&&!verified){
         return <div className="error">

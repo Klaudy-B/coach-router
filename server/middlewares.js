@@ -31,7 +31,7 @@ const verifyUser = async (req, res, next)=>{
         generalErrorHandler(error, res);
     }
 }
-const forgotPasswordMiddleware = (req, res, next)=>{
+const forgotPasswordMiddleware = async (req, res, next)=>{
     try{
         if(req.cookies&&req.cookies[`${process.env.APP_NAME}loginusername`]){
             const {id: username} = verify(req.cookies[`${process.env.APP_NAME}loginusername`], process.env.SECRETSTRING, (error, decodedToken)=>{
@@ -41,7 +41,7 @@ const forgotPasswordMiddleware = (req, res, next)=>{
                 }
                 return decodedToken;
             })
-            const user = User.findOne({username});
+            const user = await User.findOne({username});
             if(!user){
                 throw {error: userNotFound(username)};
             }

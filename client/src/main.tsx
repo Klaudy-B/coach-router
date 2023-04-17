@@ -32,7 +32,7 @@ const Bio: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./pages/Bio'
 
 import { bioAction, changeSubjectAction, coachesAction, deleteAccountAction, EmailAction, forgotPasswordAction, forgotUsernameAction, loginAction, logoutAction, passwordAction, ProfilePictureAction, recoverPasswordAction, signupAction, subjectAction, usernameAction, verifyEmailAction } from './actions';
 
-import { checkLoginStateLoader, subjectLoader } from './loaders';
+import { checkLoginStateLoader, forgotPasswordLoader, subjectLoader } from './loaders';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,8 +50,8 @@ const router = createBrowserRouter(
         <Route path='password' element={<Password />} action={passwordAction} />
         <Route path='change-email' element={<Email />} action={EmailAction} />
         <Route path='delete-account' element={<DeleteAccount />} action={deleteAccountAction} />
-        <Route path='forgot-password' element={<ForgotPassword />} action={forgotPasswordAction} />
-        <Route path='verify-email' element={<VerifyEmail />} action={verifyEmailAction} />
+        <Route path='forgot-password' element={<ForgotPassword />} loader={forgotPasswordLoader} action={forgotPasswordAction} />
+        <Route path='verify-email' element={<VerifyEmail />} loader={forgotPasswordLoader} action={verifyEmailAction} />
         <Route path='recover-password' element={<RecoverPassword />} action={recoverPasswordAction} />
         <Route path='bio' element={<Bio />} action={bioAction} />
       </Route>
