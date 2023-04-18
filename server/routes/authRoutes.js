@@ -30,7 +30,7 @@ router.get('/forgot-password-loader', forgotPasswordLoaderController);
 router.post('/login', loginController);
 router.post('/signup', signupController);
 router.post('/subject', verifyUser, subjectController);
-router.post('/verify-email', verifyUser, verifyEmailController);
+router.post('/verify-email', forgotPasswordMiddleware, verifyEmailController);
 router.post('/bio', verifyUser, bioController);
 router.post('/profile-picture', verifyUser, fileUpload(), profilePictureController);
 router.post('/forgot-password', forgotPasswordMiddleware, forgotPasswordController);
