@@ -23,7 +23,7 @@ const fileUpload = require('express-fileupload');
 
 router.get('/check-login-state', checkLoginStateController);
 router.get('/logout', logoutController);
-router.get('/verify-email', verifyUser, verifyEmailController);
+router.get('/verify-email', forgotPasswordMiddleware, verifyEmailController);
 router.get('/forgot-password', forgotPasswordMiddleware, forgotPasswordController);
 router.get('/forgot-password-loader', forgotPasswordLoaderController);
 
