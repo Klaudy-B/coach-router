@@ -53,7 +53,7 @@ module.exports.messages = {
     noUpload: 'No files were uploaded.',
     noSearchPattern: 'You did not type a search pattern.',
     userSchemaProps: ['username', 'name', 'email'],
-    userSubjectProps: ['category', 'name']
+    userSubjectProps: ['category', 'name'],
 }
 module.exports.paths = {
     absolute: __dirname,
