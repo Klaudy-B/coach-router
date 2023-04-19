@@ -42,7 +42,7 @@ const {
     signupErrorHandler,
     generalErrorHandler,
 } = require('../errorhandlers/authErrorHandlers');
-const { renameSync } = require('fs');
+const { renameSync, unlinkSync } = require('fs');
 const { join } = require('path');
 
 module.exports.checkLoginStateController = async (req, res)=>{
@@ -82,7 +82,14 @@ module.exports.forgotPasswordLoaderController = async (req, res)=>{
                     return decodedToken;
                 }
             )
-            var user = await User.findOne({_id: id}).select('name username verified email');
+            const user = await User.findOne({_id: id}).select('name username verified email');
+            if(!user){
+                setCookie(res, process.env.APP_NAME, '', 1);
+                setCookie(res, `${process.env.APP_NAME}loginusername`, '', 1);
+                throw { error: invalidToken};
+            }
+            setCookie(res, process.env.APP_NAME, req.cookies[process.env.APP_NAME]);
+            return res.status(200).json({ name: user.name, user: user.username, verified: user.verified, email: user.email});
         }
         if(req.cookies[`${process.env.APP_NAME}loginusername`]){
             const { id: username } = verify(req.cookies[`${process.env.APP_NAME}loginusername`], process.env.SECRETSTRING, (error, decodedToken)=>{
@@ -93,18 +100,14 @@ module.exports.forgotPasswordLoaderController = async (req, res)=>{
                     return decodedToken;
                 }
             )
-            var user = await User.findOne({username}).select('name username verified email');
-        }
-        if(!user){
-            setCookie(res, process.env.APP_NAME, '', 1);
-            setCookie(res, `${process.env.APP_NAME}loginusername`, '', 1);
-            throw { error: invalidToken};
-        }
-        if(req.cookies[`${process.env.APP_NAME}loginusername`]){
+            const user = await User.findOne({username}).select('name username verified email');
+            if(!user){
+                setCookie(res, process.env.APP_NAME, '', 1);
+                setCookie(res, `${process.env.APP_NAME}loginusername`, '', 1);
+                throw { error: invalidToken};
+            }
             return res.status(200).json({ name: user.name, user: user.username, verified: user.verified, email: user.email});
         }
-        setCookie(res, process.env.APP_NAME, req.cookies[process.env.APP_NAME]);
-        return res.status(200).json({ name: user.name, user: user.username, verified: user.verified, email: user.email});
     }catch(error){
         generalErrorHandler(error, res);
     }
@@ -486,6 +489,7 @@ module.exports.deleteAccountController = async (req, res)=>{
          }
          await User.findOneAndDelete({username: user.username});
          setCookie(res, process.env.APP_NAME, '', 1);
+         unlinkSync(absolute+profilePictures+'/'+user.username);
          return res.status(200).json({success: accountDeleted});
     }catch(error){
      generalErrorHandler(error, res);

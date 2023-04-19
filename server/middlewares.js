@@ -3,8 +3,7 @@ const { existsSync } = require('fs');
 const { setCookie, messages: { userNotFound } } = require('./helpers');
 const { User } = require('./models');
 const { verify } = require('jsonwebtoken');
-const { paths: { absolute, profilePictures, johnDoe }, messages: { unauthorized } } = require('./helpers');
-const static = require('express').static;
+const { paths: { absolute, profilePictures, johnDoe }, messages: { unauthorized, invalidToken } } = require('./helpers');
 
 const verifyUser = async (req, res, next)=>{
     try{
@@ -37,7 +36,7 @@ const forgotPasswordMiddleware = async (req, res, next)=>{
             const {id: username} = verify(req.cookies[`${process.env.APP_NAME}loginusername`], process.env.SECRETSTRING, (error, decodedToken)=>{
                 if(error){
                     setCookie(res, `${process.env.APP_NAME}loginusername`, '', 1);
-                    return res.status(401).end();
+                    return res.status(401).json('');
                 }
                 return decodedToken;
             })
@@ -47,11 +46,12 @@ const forgotPasswordMiddleware = async (req, res, next)=>{
             }
             req.username = user.username;
             next();
+        }else{
+            await verifyUser(req, res, next);
         }
     }catch(error){
         generalErrorHandler(error, res);
     }
-    verifyUser(req, res, next);
 }
 const staticMiddleware = (req, res, next)=>{
     const pictureName = req.url.slice(1).replaceAll('%20', ' ');
