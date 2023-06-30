@@ -22,7 +22,7 @@ module.exports.messages = {
         return `The username ${username} is already taken.`;
     },
     verificationEmailHTML: (code)=>{
-        return `<b>${code}</b> is your verification code. It will expire in 10 minutes.`;
+        return `<b>${code}</b> is your ${process.env.APP_NAME} verification code. It will expire in 10 minutes.`;
     },
     noBio: 'You did not provide any bio.',
     provideNewSubject: 'You need to provide a new subject name if you want to update it.',
