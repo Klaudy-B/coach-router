@@ -17,9 +17,13 @@ $error: red
     cursor: pointer
 html
   scroll-behavior: smooth
+::-webkit-scrollbar
+    display: none
+
 
 body
     background-image: url('background.png')
+    box-sizing: border-box
     margin: 0px
     padding: 0px
     color: white
@@ -38,24 +42,17 @@ body
     margin-bottom: 10px
 button, a
     @include button
-button
-    padding: 10px
 button:hover, a:hover
-    @include button
     color: $secondary
     background-color: inherit
-button:hover
-    padding: 10px
 
 #home>a
     background-color: inherit
     border: 0px
 button:active, a:active
-    @include button
     color: $secondary
     background-color: gray
-button:active
-    padding: 10px
+
 #home>a:hover
     color: $secondary
 p
@@ -67,14 +64,14 @@ p#home
 form
     display: block
     width: 30%
-    margin: auto calc(50% - 20px - 15%)
+    margin: auto calc(50% - 15%)
     background-color: rgba(black, 0.5)
     border-radius: 10px
-    padding: 20px
+    padding: 8px
     input
         display: block
         width: 70%
-        padding: 10px
+        padding: 10px 5px
         border-radius: 5px
 select
     padding: 10px
@@ -96,7 +93,7 @@ form#search
     background-color: white
     padding: 5px
     width: 42%
-    margin: auto calc(50% - 20px - 21%)
+    margin: auto calc(50% - 21%)
     input
         outline: 0px
         border: 0px
@@ -193,5 +190,33 @@ ul
 footer
     text-align: center
     color: white
-    padding: 100px 10px
+    padding: 100px 5px
     margin-top: 10px
+@media screen and (max-width: 580px)
+    body
+        font-size: 1rem
+    form, form#search
+        width: 60%
+        margin: auto calc(50% - 30%)
+@media screen and (max-width: 460px)
+    form, form#search
+        width: 80%
+        margin: auto calc(50% - 40%)
+        input
+            padding: 5px 3px
+@media screen and (max-width: 315px)
+    form
+        font-size: 0.5rem
+        margin: auto
+    form#search
+        font-size: 0.5rem
+        padding: 3px
+    button
+        font-size: 0.5rem
+        padding: 3px
+@media screen and (max-width: 315px)
+    body
+        font-size: 0.5rem
+@media screen and (max-width: 200px)
+    form#search
+        flex-wrap: wrap
