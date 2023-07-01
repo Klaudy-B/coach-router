@@ -30,6 +30,21 @@ const verifyUser = async (req, res, next)=>{
         generalErrorHandler(error, res);
     }
 }
+const verifyToken = async (req, res, next)=>{
+    try{
+        const user = await User.findOne({username: req.username});
+        if(!user){
+            setCookie(res, process.env.APP_NAME, '', 1);
+            throw {error: unauthorized};
+        }
+        if(!(user.csrfToken===req.body.token)){
+            throw {error: unauthorized};
+        }
+        next();
+    }catch(error){
+        generalErrorHandler(error, res);
+    }  
+}
 const forgotPasswordMiddleware = async (req, res, next)=>{
     try{
         if(req.cookies&&req.cookies[`${process.env.APP_NAME}loginusername`]){
@@ -61,4 +76,4 @@ const staticMiddleware = (req, res, next)=>{
     next();
 }
 
-module.exports = { verifyUser, staticMiddleware, forgotPasswordMiddleware };
+module.exports = { verifyUser, staticMiddleware, forgotPasswordMiddleware, verifyToken };

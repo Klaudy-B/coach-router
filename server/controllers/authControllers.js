@@ -68,6 +68,22 @@ module.exports.checkLoginStateController = async (req, res)=>{
         generalErrorHandler(error, res);
     }
 }
+module.exports.fetchTokenController = async (req, res)=>{
+    try{
+        const user = await User.findOne({username: req.username});
+        if(!user){
+            setCookie(res, process.env.APP_NAME, '', 1);
+            throw {error: unauthorized};
+        }
+        const salt = await genSalt();
+        const token = await hash(req.username, salt);
+        user.csrfToken = token;
+        await user.save();
+        return res.status(200).json({token});
+    }catch(error){
+        generalErrorHandler(error, res);
+    }  
+}
 module.exports.forgotPasswordLoaderController = async (req, res)=>{
     try{
         if(!req.cookies ||(!req.cookies[process.env.APP_NAME] && !req.cookies[`${process.env.APP_NAME}loginusername`])){
@@ -126,6 +142,7 @@ module.exports.signupController = async (req, res)=>{
                     email,
                     bio: `Hi, i am ${name}.`,
                     verified: false,
+                    csrfToken: '',
                     emailCode: {value: ''},
                     recoveryCode: {value: ''},
                     recoveryAuthorized: {value: false}
