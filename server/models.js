@@ -9,7 +9,6 @@ module.exports.User = new model('user', Schema(
             subject: {category: String, name: String, price: Number},
             bio: String,
             verified: Boolean,
-            csrfToken: String,
             emailCode: {value: String, updatedAt: {type: Date, default: ()=> Date.now()}},
             recoveryCode: {value: String, updatedAt: {type: Date, default: ()=> Date.now()}},
             recoveryAuthorized: {value: Boolean, updatedAt: {type: Date, default: ()=> Date.now()}},

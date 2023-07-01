@@ -29,8 +29,7 @@ const BaseLayout: ()=>JSX.Element = () => {
     <Outlet />
     </userContext.Provider>
     <footer>
-        <h1><a href="#home">COACH ROUTER</a></h1>
-        <p>&copy; copyright {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME}</p>
+        <h1><a href="#home">{import.meta.env.VITE_APP_NAME}</a></h1>
     </footer>
     </>
 }

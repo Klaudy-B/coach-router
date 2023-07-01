@@ -5,7 +5,7 @@ import './index.sass';
 
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 
-import Loading from './components/Loading';
+import AbsoluteLoading from './components/AbsoluteLoading';
 const BaseLayout: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/BaseLayout'));
 const Username: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Username'));
 const Password: LazyExoticComponent<()=> JSX.Element> = lazy(()=>import('./components/Password'));
@@ -62,7 +62,7 @@ const router = createBrowserRouter(
 )
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<AbsoluteLoading />}>
       <RouterProvider router={router} />
     </Suspense>
   </React.StrictMode>,

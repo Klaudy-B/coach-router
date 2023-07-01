@@ -1,4 +1,5 @@
+import "../loading.css";
 const Loading: ()=> JSX.Element = () => {
-    return <center><span>Loading...</span></center>
+    return <center><span className='loading'></span></center>
 }
 export default Loading;

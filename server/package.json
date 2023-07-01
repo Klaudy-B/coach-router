@@ -1,6 +1,11 @@
 {
   "scripts": {
-    "dev2": "nodemon server"
+    "dev2": "nodemon server",
+    "start": "node server"
+  },
+  "engines": {
+    "node": "18",
+    "npm": "9"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

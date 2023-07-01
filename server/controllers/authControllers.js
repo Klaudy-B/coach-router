@@ -42,7 +42,7 @@ const {
     signupErrorHandler,
     generalErrorHandler,
 } = require('../errorhandlers/authErrorHandlers');
-const { renameSync, unlinkSync } = require('fs');
+const { renameSync, unlinkSync, existsSync } = require('fs');
 const { join } = require('path');
 
 module.exports.checkLoginStateController = async (req, res)=>{
@@ -67,22 +67,6 @@ module.exports.checkLoginStateController = async (req, res)=>{
     }catch(error){
         generalErrorHandler(error, res);
     }
-}
-module.exports.fetchTokenController = async (req, res)=>{
-    try{
-        const user = await User.findOne({username: req.username});
-        if(!user){
-            setCookie(res, process.env.APP_NAME, '', 1);
-            throw {error: unauthorized};
-        }
-        const salt = await genSalt();
-        const token = await hash(req.username, salt);
-        user.csrfToken = token;
-        await user.save();
-        return res.status(200).json({token});
-    }catch(error){
-        generalErrorHandler(error, res);
-    }  
 }
 module.exports.forgotPasswordLoaderController = async (req, res)=>{
     try{
@@ -142,7 +126,6 @@ module.exports.signupController = async (req, res)=>{
                     email,
                     bio: `Hi, i am ${name}.`,
                     verified: false,
-                    csrfToken: '',
                     emailCode: {value: ''},
                     recoveryCode: {value: ''},
                     recoveryAuthorized: {value: false}
@@ -506,7 +489,9 @@ module.exports.deleteAccountController = async (req, res)=>{
          }
          await User.findOneAndDelete({username: user.username});
          setCookie(res, process.env.APP_NAME, '', 1);
-         unlinkSync(absolute+profilePictures+'/'+user.username);
+         if(existsSync(absolute+profilePictures+'/'+user.username)){
+            unlinkSync(absolute+profilePictures+'/'+user.username);
+         }
          return res.status(200).json({success: accountDeleted});
     }catch(error){
      generalErrorHandler(error, res);
